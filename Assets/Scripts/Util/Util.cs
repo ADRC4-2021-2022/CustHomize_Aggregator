@@ -95,25 +95,25 @@ public static class Util
     /// Generate a random index within voxelgrid dimensions
     /// </summary>
     /// <returns>A random index</returns>
-    public static Vector3Int RandomIndex(Vector3Int gridDimensions)
-    {
-        int x = Random.Range(0, gridDimensions.x);
-        int y = Random.Range(0, gridDimensions.y);
-        int z = Random.Range(0, gridDimensions.z);
-        return new Vector3Int(x, y, z);
-    }
+    //public static Vector3Int RandomIndex(Vector3Int gridDimensions)
+    //{
+    //    int x = Random.Range(0, gridDimensions.x);
+    //    int y = Random.Range(0, gridDimensions.y);
+    //    int z = Random.Range(0, gridDimensions.z);
+    //    return new Vector3Int(x, y, z);
+    //}
 
     /// <summary>
     /// Get a random rotation alligned with the x,y or z axis
     /// </summary>
     /// <returns>A random rotation</returns>
-    public static Quaternion RandomCarthesianRotation()
-    {
-        int x = Random.Range(0, 4) * 0;
-        int y = Random.Range(0, 4) * 90;
-        int z = Random.Range(0, 4) * 0;
-        return Quaternion.Euler(x, y, z);
-    }
+    //public static Quaternion RandomCarthesianRotation()
+    //{
+    //    int x = Random.Range(0, 4) * 0;
+    //    int y = Random.Range(0, 4) * 90;
+    //    int z = Random.Range(0, 4) * 0;
+    //    return Quaternion.Euler(x, y, z);
+    //}
 
   
 }
