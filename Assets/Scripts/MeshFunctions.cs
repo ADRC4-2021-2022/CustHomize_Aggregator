@@ -45,7 +45,7 @@ public class MeshFunctions : MonoBehaviour
     /// <param name="voxelSize">The size of the voxels</param>
     /// <returns></returns>
     public Vector3 GetOrigin(int voxelOffset, float voxelSize) =>
-        MeshBounds.center - (Vector3)GetGridDimensions(voxelOffset,voxelSize) * voxelSize/2;
+        MeshBounds.center - (Vector3)Get_gridDimensions(voxelOffset,voxelSize) * voxelSize/2;
 
     /// <summary>
     /// Calculate the dimensions of the grid based on the collider, the voxelsize and a certain voxel offset
@@ -53,10 +53,10 @@ public class MeshFunctions : MonoBehaviour
     /// <param name="voxelOffset">number of layers of voxel existing around the bounding box of the collider</param>
     /// <param name="voxelSize">size of the voxels</param>
     /// <returns>The dimensions for a voxelgrid encapsulating the collider</returns>
-    public Vector3Int GetGridDimensions(int voxelOffset, float voxelSize) =>
+    public Vector3Int Get_gridDimensions(int voxelOffset, float voxelSize) =>
         (MeshBounds.size / voxelSize).ToVector3IntRound() + Vector3Int.one * voxelOffset * 2;
 
-
+    /*
     /// <summary>
     /// Check if a voxel is inside the mesh, using the Voxel centre
     /// </summary>
@@ -66,7 +66,7 @@ public class MeshFunctions : MonoBehaviour
     {
         var point = voxel.Centre;
         return Util.PointInsideCollider(point, _collider);
-    }
+    }*/
     #endregion
 }
 

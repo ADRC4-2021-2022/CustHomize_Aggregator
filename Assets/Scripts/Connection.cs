@@ -28,6 +28,7 @@ public class Connection
     #region public functions
     public void AddTilePatternToConnection(TilePattern pattern)
     {
+        if(ConnectingTiles == null)ConnectingTiles = new List<TilePattern>();
         ConnectingTiles.Add(pattern);
     }
 
