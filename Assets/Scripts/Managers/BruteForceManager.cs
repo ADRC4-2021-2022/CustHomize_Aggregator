@@ -258,7 +258,7 @@ public class BruteForceManager : MonoBehaviour
         //Random voxel in the entire grid: Least accurate but non expensive ==> very fast EG Seed 0: 35%
         //_grid.AddBlock(Util.RandomIndex(_grid.GridDimensions), Util.RandomCarthesianRotation());
         //Random voxel in the non dead voxels: Medium accurate, low expensive ==> medium fast EG Seed 0: 59% filled
-        _grid.AddBlock(_nonDeadVoxels[Random.Range(0, _nonDeadVoxels.Count)].Index, Util.RandomCarthesianRotation());
+        //_grid.AddBlock(_nonDeadVoxels[Random.Range(0, _nonDeadVoxels.Count)].Index, Util.RandomCarthesianRotation());
 
         bool blockAdded = _grid.TryAddCurrentBlocksToGrid();
         _grid.PurgeUnplacedBlocks();

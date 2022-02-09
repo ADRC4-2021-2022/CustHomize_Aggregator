@@ -29,16 +29,16 @@ public static class Util
     /// <summary>
     /// Generate a random color
     /// </summary>
-    public static Color RandomColor
-    {
-        get
-        {
-            float r = Random.Range(0, 255) / 255f;
-            float g = Random.Range(0, 255) / 255f;
-            float b = Random.Range(0, 255) / 255f;
-            return new Color(r, g, b);
-        }
-    }
+    //public static Color RandomColor
+    //{
+    //    get
+    //    {
+    //        float r = Random.Range(0, 255) / 255f;
+    //        float g = Random.Range(0, 255) / 255f;
+    //        float b = Random.Range(0, 255) / 255f;
+    //        return new Color(r, g, b);
+    //    }
+    //}
 
     public static bool TryOrientIndex(Vector3Int localIndex, Vector3Int anchor, Quaternion rotation, Vector3Int gridDimensions, out Vector3Int worldIndex)
     {

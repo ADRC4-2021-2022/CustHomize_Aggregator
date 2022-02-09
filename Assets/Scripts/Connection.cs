@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //Add all connection types here
-public enum ConnectionType { conPink = 0 , conYellow = 1}
+public enum ConnectionType { conPink = 0 , conYellow = 1, conBlue = 2, conOrange = 3, conCyan = 4, conGreen = 5}
 public class Connection
 {
     #region public fields
@@ -20,6 +20,8 @@ public class Connection
     public Connection(ConnectionType type, string name)
     {
         Type = type;
+        Name = name;
+
     }
 
     #endregion
