@@ -104,8 +104,8 @@ public class MainCamera : MonoBehaviour
 
     public void SetPositionTop()
     {
-        VoxelGridManager gridManager = GameObject.FindObjectsOfType<VoxelGridManager>()[0];
+        //VoxelGridManager gridManager = GameObject.FindObjectsOfType<VoxelGridManager>()[0];
 
-        transform.SetPositionAndRotation(new Vector3(gridManager.GridCentre.x, gridManager.GridCentre.y + _height, gridManager.GridCentre.z), Quaternion.Euler(90, 0, 0));
+        //transform.SetPositionAndRotation(new Vector3(gridManager.GridCentre.x, gridManager.GridCentre.y + _height, gridManager.GridCentre.z), Quaternion.Euler(90, 0, 0));
     }
 }

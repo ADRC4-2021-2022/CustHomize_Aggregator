@@ -32,7 +32,7 @@ public class TilePattern
 
     #region private fields
     GameObject _goTilePrefab;
-    private PatternType mat_ConPink;
+    /*private PatternType mat_ConPink;
     private PatternType mat_ConYellow;      //ADDED
     private PatternType mat_ConBlue;        //ADDED
     private PatternType mat_ConOrange;      //ADDED
@@ -44,7 +44,7 @@ public class TilePattern
     private string u;                       //ADDED
     private string v;
     private string w;                       //ADDED
-
+    */
     #endregion
     #region constructors
     public TilePattern(int index, GameObject goTilePrefab, List<Connection> connectionTypes)
@@ -54,28 +54,7 @@ public class TilePattern
         ConnectionTypes = connectionTypes;
 
         GetConnections();
-    }
 
-    //public TilePattern(PatternType mat_ConPink, string v)
-    //{
-    //    this.mat_ConPink = mat_ConPink;
-    //    this.v = v;
-    //}
-
-    public TilePattern(PatternType mat_ConPink, PatternType mat_ConYellow, PatternType mat_ConBlue, PatternType mat_ConOrange, PatternType mat_ConCyan, PatternType mat_ConGreen, string r, string s, string t, string u, string v, string w)   //ADDED
-    {   
-        this.mat_ConPink = mat_ConPink;         //ADDED 
-        this.mat_ConYellow = mat_ConYellow;     //ADDED
-        this.mat_ConBlue = mat_ConBlue;         //ADDED
-        this.mat_ConOrange = mat_ConOrange;     //ADDED
-        this.mat_ConCyan = mat_ConCyan;         //ADDED
-        this.mat_ConGreen = mat_ConGreen;       //ADDED
-        this.r = r;                             //ADDED
-        this.s = s;                             //ADDED
-        this.t = t;                             //ADDED
-        this.u = u;                             //ADDED
-        this.v = v;                             //ADDED
-        this.w = w;                             //ADDED
     }
 
     #endregion
