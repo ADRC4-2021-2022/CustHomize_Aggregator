@@ -5,6 +5,79 @@ using UnityEngine;
 using TMPro;
 //using Eppy; //ADDED ??DO WE NEED THIS??
 
+//ADD A DIFFERENT COLOR ON THE TOP.
+//PATTERN LIBRARY IS THE OLD SOLUTION
+//GET RID OF ALL THE THINGS FROM THE OLD SOLUTION
+//GO FROM GET CONNECTIONS - 
+//FIRST THING WE NEED TO DO IS GET THE PATTERN LIBRARY
+//WE NEED A MONOBEHAVIOUR SCRIPT SOMEWHERE - CONSTRAINT SOLVER
+//MAKING A NEW BRANCH SO WE DON'T LOSE ALL THE ORIGINAL ONES
+//CLEANING UP THE FILE - DELETING UNEEDED SCRIPTS.
+//ADDING A GAME OBJECT
+
+//FIRST, WE NEED ALL OUR PREFABS - REGION OF SERIALIZED FIELDS.
+//LIST OF GAME OBJECTS
+//GO PATTERNS
+//CREATE EMPTY IN UNTIY
+//ADD PREFABS TO IT
+//WE WON'T HAVE A CONSTRUCTOR, BUT WE WILL HAVE A START
+//ADD LIBRARY AS A FOR EACH LOOP IN THE CONSTRAINT SOLVER
+//INDEX IS _patternlibrary.Count, goPattern, _connections
+//change constraint solver to void start
+
+
+//initialize connecting tiles (if..)
+//pattern library is working, now we need to set up the grid.
+//under pattern library, set up tile grid. (make tiles will make them in the grid)
+//we want to 
+
+
+//get next tile
+//function that gives you a number - GetUnsetTiles
+//loop over tiles and check which are not set --> add bool to tiles
+//get set return PossiblePatterns.Count (the moment there is only one possible pattern, it is set)
+//also want a private flattened list of tiles
+
+//need to add integer to tiles for number of possible patterns.
+//do a foreach loop to find the tile with the least number of possible connections
+//want to select a random tile out of the list --. rndIndex (moved from return to Tile tile to set
+
+
+//in Tile AssignRandomPossiblePattern ***
+//will need a voxel size / tile size (added as serialize field in the constraint solver)
+//create a prefab in Tile
+//for now ignore add weighted randomness
+
+
+//TileToSet.AssignRandomPossiblePattern
+
+
+//now we need to do propogate grid ***
+//private void propogate grid
+//loop over all cartesian directions (list is in util)
+//get the neighbours of the set tile in the direction
+//get the connection of the set tile at the direction
+//get all the tiles with the same connection in opposite direction
+//remove all the possible patterns in the neighbour tile that are not in the connection list (cross reference lists)
+//if a tile has only one possible pattern, 
+//--> set the tile
+//propogate grid for this tile --> you might have to call this from in the tile
+//make a function in tile CrossReferenceConnectionPatterns
+//run in propogate grid on the neighbour tile
+
+
+//tile propogate grid
+//tile public void AssignPattern
+//want to assign a pattern when it has only one option
+
+//get neighbour of tile in a certain direction
+
+
+//start with creating a tile  -->ASSIGN PATTERN , write a function that loops over all the patterns that assigns random indexes
+//see if it creates one of the tiles
+//populate the grid randomly
+//WFC functions
+
 public class ConstraintSolver : MonoBehaviour
 {
     #region Serialized fields
@@ -13,7 +86,7 @@ public class ConstraintSolver : MonoBehaviour
     [SerializeField]
     private Vector3Int _gridDimensions;
     [SerializeField]
-    private float _tileSize;
+    public float TileSize;         //CHANGED - FROM PRIVATE TO PUBLIC FOR USE IN TILE FILE, ASSIGN PATTERN
 
     #endregion
     #region public fields
@@ -137,8 +210,14 @@ public class ConstraintSolver : MonoBehaviour
 
     public void PropogateGrid(Tile setTile)
     {
-        //Loop over all cartesian directions (list is in Util)
+        //Loop over all cartesian directions (list is in Util)  EP - loop that referneces Util
+
+        //for ADDED LOL
+
         ////Get the neighbour of the set tile in the direction
+        
+
+
         ////Get the connection of the set tile at the direction
         ////Get all the tiles with the same connection in oposite direction
         ////Remove all the possiblePatterns in the neighbour tile that are not in the connection list. 
