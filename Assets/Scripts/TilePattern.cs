@@ -102,7 +102,7 @@ public class TilePattern
     }
     #endregion
     #region private functions
-    private void GetConnections()
+    public void GetConnections()
     {
         Connections = new Connection[6];
 

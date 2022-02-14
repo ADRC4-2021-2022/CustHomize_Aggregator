@@ -11,19 +11,19 @@ public static class Util
     /// <param name="v">the Vector3 variable this method is applied to</param>
     /// <returns>the rounded Vector3Int value of the given Vector3</returns>
     public static Vector3Int ToVector3IntRound(this Vector3 v) => new Vector3Int(Mathf.RoundToInt(v.x), Mathf.RoundToInt(v.y), Mathf.RoundToInt(v.z));
-    
+
 
     /// <summary>
     /// List of the Carthesian directions (along the x, y, z axis)
     /// </summary>
-    public static List<Vector3Int> Directions = new List<Vector3Int>
+    public static List<Vector3Int> Directions = new List<Vector3Int>                        //CHANGED - FROM STATIC LIST TO STATIC VOID - SO THAT IT CAN BE REFERENCED IN CONSTRAINT SOLVER
     {
-        new Vector3Int(-1,0,0),// min x
-        new Vector3Int(1,0,0),// plus x
-        new Vector3Int(0,-1,0),// min y
-        new Vector3Int(0,1,0),// plus y
-        new Vector3Int(0,0,-1),// min z
-        new Vector3Int(0,0,1)// plus z
+            new Vector3Int(-1,0,0),// min x     0
+            new Vector3Int(1,0,0),// plus x     1
+            new Vector3Int(0,-1,0),// min y     2
+            new Vector3Int(0,1,0),// plus y     3
+            new Vector3Int(0,0,-1),// min z     4
+            new Vector3Int(0,0,1)// plus z      5
     };
 
     /// <summary>
