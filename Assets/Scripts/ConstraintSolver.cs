@@ -5,6 +5,7 @@ using UnityEngine;
 using TMPro;
 //using Eppy; //ADDED ??DO WE NEED THIS??
 
+//Notes From Class Time..... Ln 9-80
 //ADD A DIFFERENT COLOR ON THE TOP.
 //PATTERN LIBRARY IS THE OLD SOLUTION
 //GET RID OF ALL THE THINGS FROM THE OLD SOLUTION
@@ -103,12 +104,12 @@ public class ConstraintSolver : MonoBehaviour
     public Vector3Int Index { get; private set; }     //ADDED 2
     //List<Vector3Int> Directions;
 
-    private TilePattern _mat_ConPink;   //ADDED
-    private TilePattern _mat_ConYellow; //ADDED
-    private TilePattern _mat_ConBlue;   //ADDED
-    private TilePattern _mat_Orange;    //ADDED
-    private TilePattern _mat_Cyan;      //ADDED
-    private TilePattern _mat_Green;     //ADDED
+    private TilePattern _mat_ConPink;   //ADDED   00
+    private TilePattern _mat_ConYellow; //ADDED   01
+    private TilePattern _mat_ConBlue;   //ADDED   02
+    private TilePattern _mat_Orange;    //ADDED   03
+    private TilePattern _mat_Cyan;      //ADDED   04
+    private TilePattern _mat_Green;     //ADDED   05
 
     //Eppy.Tuple<int, int>[] stack;     //ADDED
     int stacksize;                      //ADDED
@@ -126,12 +127,12 @@ public class ConstraintSolver : MonoBehaviour
         //Add all connections
         _connections = new List<Connection>();
 
-        _connections.Add(new Connection(ConnectionType.conPink, "conPink"));
-        _connections.Add(new Connection(ConnectionType.conYellow, "conYellow"));
-        _connections.Add(new Connection(ConnectionType.conBlue, "conBlue"));            //ADDED
-        _connections.Add(new Connection(ConnectionType.conOrange, "conOrange"));        //ADDED
-        _connections.Add(new Connection(ConnectionType.conCyan, "conCyan"));            //ADDED
-        _connections.Add(new Connection(ConnectionType.conGreen, "conGreen"));          //ADDED
+        _connections.Add(new Connection(ConnectionType.conPink, "conPink"));                           //00
+        _connections.Add(new Connection(ConnectionType.conYellow, "conYellow"));                       //01
+        _connections.Add(new Connection(ConnectionType.conBlue, "conBlue"));            //ADDED        //02
+        _connections.Add(new Connection(ConnectionType.conOrange, "conOrange"));        //ADDED        //03
+        _connections.Add(new Connection(ConnectionType.conCyan, "conCyan"));            //ADDED        //04
+        _connections.Add(new Connection(ConnectionType.conGreen, "conGreen"));          //ADDED        //05
 
         //Add all patterns
         _patternLibrary = new List<TilePattern>();
@@ -172,23 +173,18 @@ public class ConstraintSolver : MonoBehaviour
 
     private void GetNextTile()
     {
-        List<Tile> unsetTiles = GetUnsetTiles();
+        List<Tile> newPossibleNeighbours = GetUnsetTiles();             //CHANGED 2 unsetTiles to newPossibleNeighbours
         //Check if there still are tiles to set
-        if (unsetTiles.Count == 0)
+        if (newPossibleNeighbours.Count == 0)
         {
             Debug.Log("all tiles are set");
             return;
-        }
+        }                       //CHANGED 2 unsetTiles to newPossibleNeighbours
 
-
-        //Count how many possible patterns there are
-        //Find all the tiles with the least amount of possible patterns
-        //Select a random tile out of this list
-        //Get the tiles with the least amount of possible patterns
         List<Tile> lowestTiles = new List<Tile>();
         int lowestTile = int.MaxValue;
 
-        foreach (Tile tile in unsetTiles)
+        foreach (Tile tile in newPossibleNeighbours)                    //CHANGED 2 unsetTiles to newPossibleNeighbours
         {
             if (tile.NumberOfPossiblePatterns < lowestTile)
             {
@@ -201,6 +197,12 @@ public class ConstraintSolver : MonoBehaviour
                 lowestTiles.Add(tile);
             }
         }
+
+        //Count how many possible patterns there are
+        //Find all the tiles with the least amount of possible patterns
+        //Select a random tile out of this list
+        //Get the tiles with the least amount of possible patterns
+
 
         //Select a random tile out of the list
         int rndIndex = Random.Range(0, lowestTiles.Count);
@@ -218,125 +220,125 @@ public class ConstraintSolver : MonoBehaviour
 
     public void PropogateGrid(Tile setTile)
     {
-        
-    }
 
-    public List<Tile> GetTileDirectionList()                                            //ADDED 2         
-    {
-        List<Tile> tileDirections = new List<Tile>();                                   //ADDED 2       
-        foreach (Vector3Int tileDirection in Util.Directions)                           //ADDED 2
-        {
-            Vector3Int tileDirectionsIndex = Index + tileDirection;                     //ADDED 2
-            if (Util.CheckInBounds(_tileGrid._gridDimensions, tileDirectionsIndex));    //ADDED 2
-        }
-        return tileDirections;                                                          //ADDED 2
-    }    
 
-    public List<Tile> GetRelatedTileSides(List<Vector3Int> relativeDirections)          //ADDED 2
-    {
-        List<Tile> relatedTileSides = new List<Tile>();                                 //ADDED 2
-        foreach (Vector3Int relativeDirection in relativeDirections)                    //ADDED 2
-        {
-            //if Direction = y+                                                         //ADDED 2
-            { //WORKING OFF OF THE CONNECTIONS LABELED IN TILEPATTERN
-                //relativeDirection = Connection [3]                                    //ADDED 2
-            }
 
-        }
-
-        return relatedTileSides;                                                        //ADDED 2
-    }
-        
-    
         //Loop over all cartesian directions (list is in Util)  EP - loop that referneces Util
         //We will be referencing Directions from Util
-        
-
-        ////Get the neighbour of the set tile in the direction
-        ////Get the connection of the set tile at the direction
-        ////Get all the tiles with the same connection in oposite direction
-        ////Remove all the possiblePatterns in the neighbour tile that are not in the connection list. 
-        ////Run the CrossreferenceConnectionPatterns() on the neighbour tile
-        ////If a tile has only one possiblePattern
-        //////Set the tile
-        //////PropogateGrid for this tile
-
-    //private Vector3Int Directions;
-    //private string directions;
-
-
-    //IEnumerator Directions(IEnumerable enumerable);
-
-    //foreach (int Direction in enumerable)
-    //{
-
-    //}
-
-    //get set is used to encapsulate the field in a property
-
-    //IEnumerator enumerator = enumerable.GetEnumerator();    //ADDED
-
-    //List<Vector3Int> Directions = Directions();
-    //foreach (object Tile in enumerable)                     //ADDED
-    //{
-    //    // Perform logic on the item
-    //    GetTile {var setTiles};                           //ADDED
-    //    setTile {var Connection};                           //ADDED
-    //}
-
-
-
-
-
-
-
-
-    private Tile GetNeighbour(Tile tile, Vector3Int direction)
-    {
-        
-
-        //Get the neighbour of a tile in a certain direction
-        //ADDED add what the opposite direction is.
-        return null;
     }
 
-    public List<Tile> GetUnsetTiles() //??HOW DO WE KNOW THAT IT'S GETTING THE UNSET TILES? IT DOESN'T APPEAR ANYWHERE ELSE?
-    {
-        List<Tile> unsetTiles = new List<Tile>();
-
-        //Loop over all the tiles and check which ones are not set
-        foreach (var tile in GetTilesFlattened())
+        public List<Tile> GetTileDirectionList()                                            //ADDED 2         
         {
-            if (tile.Set) unsetTiles.Add(tile);
-        }
-        return unsetTiles;
-    }
-
-    private List<Tile> GetTilesFlattened()
-    {
-        List<Tile> tiles = new List<Tile>();
-        for (int x = 0; x < _gridDimensions.x; x++)
-        {
-            for (int y = 0; y < _gridDimensions.y; y++)
+            List<Tile> tileDirections = new List<Tile>();                                   //ADDED 2       //Establishing cardinal directions
+            foreach (Vector3Int tileDirection in Util.Directions)                           //ADDED 2       //
             {
-                for (int z = 0; z < _gridDimensions.z; z++)
+                Vector3Int tileDirectionsIndex = Index + tileDirection;                     //ADDED 2
+                if (Util.CheckInBounds(_tileGrid._gridDimensions, tileDirectionsIndex)) ;   //ADDED 2
+            }
+            return tileDirections;                                                          //ADDED 2
+            //need to adjust naming to correspond with GetNeighbour below
+        }
+
+        //public List<Tile> GetRelatedTileSides(List<Vector3Int> relativeDirections)          //ADDED 2
+        //{
+        //    List<Tile> relatedTileSides = new List<Tile>();                                 //ADDED 2
+        //    foreach (Vector3Int relativeDirection in relativeDirections)                    //ADDED 2
+        //    {
+        //        //if Direction = y+                                                         //ADDED 2
+        //        { //WORKING OFF OF THE CONNECTIONS LABELED IN TILEPATTERN
+        //          //relativeDirection = Connection [3]                                      //ADDED 2
+        //        }
+        //        //this is where we are calling out what the connections are..? 
+        //        ////tile pattern file TilePattern.Connections 
+        //        ////
+
+        //    }
+
+        //    return relatedTileSides;                                                        //ADDED 2
+        //}
+
+        //Get the neighbour of the set tile in the direction
+
+
+        //Get the connection of the set tile at the direction
+        //Get all the tiles with the same connection in oposite direction
+        //Remove all the possiblePatterns in the neighbour tile that are not in the connection list. 
+        //Run the CrossreferenceConnectionPatterns() on the neighbour tile
+        //If a tile has only one possiblePattern
+
+        //Set the tile
+        //PropogateGrid for this tile
+
+        //private Vector3Int Directions;
+        //private string directions;
+
+        //get set is used to encapsulate the field in a property
+
+
+        //run cross reference patterns on the neighbor tile - Tile.CrossReferenceConnectionPatterns
+        private Tile GetNeighbour(Tile unsetTile, Vector3Int tileDirections, var possibleNeighbours, List<Tile> newPossiblePatterns) //CHANGED 2 tile to unsetTile, added possibleNeighbours, List<Tile> newPossiblePatterns
+        {                                         //ADDED 2
+            foreach (Tile unsetTile in tileDirections)                               //ADDED 2       
+
+                unsetTile = possibleNeighbours;                                     //ADDED 2
+
+
+            List<Tile> newPossibleNeighbours = new List<Tile>();                //ADDED 2
+            foreach (Tile unsetTile in possibleNeighbours)                      //ADDED 2
+            {
+                if (possibleNeighbours.Contains(newPossiblePatterns));           //ADDED 2
+            }
+
+            possibleNeighbours = newPossibleNeighbours;                          //ADDED 2
+
+
+            //Get the neighbour of a tile in a certain direction
+            //need to reference the directions list / loop above
+            //ADDED add what the opposite direction is.
+
+            //return null;
+
+            //this function is essentially creating a list of possible neighbours in all directions that are contained in both lists
+        }
+
+        public List<Tile> GetUnsetTiles() //??HOW DO WE KNOW THAT IT'S GETTING THE UNSET TILES? IT DOESN'T APPEAR ANYWHERE ELSE?
+        {
+            List<Tile> unsetTiles = new List<Tile>();
+
+            //Loop over all the tiles and check which ones are not set
+            foreach (var tile in GetTilesFlattened())
+            {
+                if (tile.Set) unsetTiles.Add(tile);     //??WHERE IS tile.Set coming from?
+            }
+            return unsetTiles;
+        }
+
+        private List<Tile> GetTilesFlattened()   //IS THIS A METHOD OF TILE PLACEMENT WITHIN THE GRID?
+        {
+            List<Tile> tiles = new List<Tile>();
+            for (int x = 0; x < _gridDimensions.x; x++)
+            {
+                for (int y = 0; y < _gridDimensions.y; y++)
                 {
-                    tiles.Add(_tileGrid[x, y, z]);
+                    for (int z = 0; z < _gridDimensions.z; z++)
+                    {
+                        tiles.Add(_tileGrid[x, y, z]);
+                    }
                 }
             }
+            return tiles;
         }
-        return tiles;
-    }
-
-    //Find a tile in the grid that it not set with the least possible options
 
 
-////If one or multiple of the neighbours has no more possible tilepattern, solving failed, start over
-////you could assign a possible tile of the previous propogation, this will cause impurities but might make it easier to solve
+    //Find a tile in the grid that it not set with the least possible options - this is done under GetNextTile
 
-////If one or multiple of the neighbours has only one possible tilepattern, set the tile pattern
-////propogate the grid for the new set tile
 
+    //If one or multiple of the neighbours has no more possible tilepattern, solving failed, start over - NOT DONE YET
+    //you could assign a possible tile of the previous propogation, this will cause impurities but might make it easier to solve - NOT DONE YET. 
+    ////IF YOU RUN INTO A SITUATION WHERE THERE ARE NO MORE POSSIBLE TILES, ASSIGN A RANDOM ONE
+    //If one or multiple of the neighbours has only one possible tilepattern, set the tile pattern
+    //propogate the grid for the new set tile
+
+    #endregion
 }
-#endregion
 

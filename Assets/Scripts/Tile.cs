@@ -83,14 +83,14 @@ public class Tile
                 _goTilePatternPrefabs = new Dictionary<int, GameObject>();                              //ADDED
                 _goTilePatternPrefabs.Add(0, Resources.Load("Prefabs/PrefabPatternB") as GameObject);   //ADDED
                 _goTilePatternPrefabs.Add(1, Resources.Load("Prefabs/PrefabPatternI") as GameObject);   //ADDED
-                _goTilePatternPrefabs.Add(1, Resources.Load("Prefabs/PrefabPatternK") as GameObject);   //ADDED
-                _goTilePatternPrefabs.Add(1, Resources.Load("Prefabs/PrefabPatternM") as GameObject);   //ADDED
+                _goTilePatternPrefabs.Add(2, Resources.Load("Prefabs/PrefabPatternK") as GameObject);   //ADDED
+                _goTilePatternPrefabs.Add(3, Resources.Load("Prefabs/PrefabPatternM") as GameObject);   //ADDED
             }
             return _goTilePatternPrefabs;                                                               //ADDED
         }
     }
 
-    public void CrossreferenceConnectionPatterns(List<TilePattern> patterns)
+    public void CrossReferenceConnectionPatterns(List<TilePattern> patterns) //THIS IS REFERENCING THE TilePattern SCRIPT, WHICH CONTAINS ALL CONNECTIONS
     {
         //Check if the patterns exist in both lists
         List<TilePattern> newPossiblePatterns = new List<TilePattern>();
