@@ -85,25 +85,26 @@ using Unity.VisualScripting;
 public class ConstraintSolver : MonoBehaviour
 {
     #region Serialized fields
+    //[SerializeField]
+    //private List<GameObject> _goPatterns;
     [SerializeField]
-    private List<GameObject> _goPatterns;
-    [SerializeField]
-    public Vector3Int _gridDimensions;
+    public Vector3Int GridDimensions;
     [SerializeField]
     public float TileSize;         //CHANGED - FROM PRIVATE TO PUBLIC FOR USE IN TILE FILE, ASSIGN PATTERN
-   
+
 
     #endregion
     #region public fields
 
+    public GameObject[] GOPatternPrefabs;
 
     #endregion
 
     #region private fields
-    Tile[,,] _tileGrid;
+    public Tile[,,] TileGrid { private set; get; }
     List<TilePattern> _patternLibrary; //?? WHERE DOES THIS GO??
     List<Connection> _connections;
-    List<Vector3Int> Connections;
+    //List<Vector3Int> Connections;
     //List<TilePattern> newPossiblePatterns;              //ADDED 2 - UNSURE IF THIS IS THE CORRECT WAY TO CALL IT
 
     public Vector3Int Index { get; private set; }       //ADDED 2
@@ -127,9 +128,16 @@ public class ConstraintSolver : MonoBehaviour
 
 
     #endregion
-    #region constructors
+
     void Start()
     {
+        GOPatternPrefabs = new GameObject[]
+        {
+            Resources.Load<GameObject>("Prefabs/PrefabPatternB"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternI"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternK"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternM")
+        };
         //Add all connections
         _connections = new List<Connection>();
 
@@ -142,18 +150,24 @@ public class ConstraintSolver : MonoBehaviour
 
         //Add all patterns
         _patternLibrary = new List<TilePattern>();
-        foreach (var goPattern in _goPatterns)
+        for (int i = 0; i < GOPatternPrefabs.Length; i++)
         {
-            _patternLibrary.Add(new TilePattern(_patternLibrary.Count, goPattern, _connections));
+            var goPattern = GOPatternPrefabs[i];
+            _patternLibrary.Add(new TilePattern(i, goPattern, _connections));
         }
+        //foreach (var goPattern in GOPatternPrefabs)
+        //{
+        //    _patternLibrary.Add(new TilePattern(_patternLibrary.Count, goPattern, _connections));
+        //}
 
         //Set up the tile grid
         MakeTiles();
-
+        // add a random tile to a random position
+        TileGrid[0, 0, 0].AssignPattern(_patternLibrary[0]);
+        GetNextTile();
+        
     }
 
-
-    #endregion
     #region public functions
 
 
@@ -164,14 +178,14 @@ public class ConstraintSolver : MonoBehaviour
     /// </summary>
     private void MakeTiles()
     {
-        _tileGrid = new Tile[_gridDimensions.x, _gridDimensions.y, _gridDimensions.z];
-        for (int x = 0; x < _gridDimensions.x; x++)
+        TileGrid = new Tile[GridDimensions.x, GridDimensions.y, GridDimensions.z];
+        for (int x = 0; x < GridDimensions.x; x++)
         {
-            for (int y = 0; y < _gridDimensions.y; y++)
+            for (int y = 0; y < GridDimensions.y; y++)
             {
-                for (int z = 0; z < _gridDimensions.z; z++)
+                for (int z = 0; z < GridDimensions.z; z++)
                 {
-                    _tileGrid[x, y, z] = new Tile(new Vector3Int(x, y, z), _patternLibrary, this);
+                    TileGrid[x, y, z] = new Tile(new Vector3Int(x, y, z), _patternLibrary, this);
                 }
             }
         }
@@ -179,6 +193,14 @@ public class ConstraintSolver : MonoBehaviour
 
     private void GetNextTile()
     {
+        // get all unset tiles -> tiles that have no tile pattern assinged (tile.CurrentPattern)
+        // for each of the unset, get the PossibleConnections
+        // sort your unset tiles by the length of possible connection -> 0 == smallest lenght
+        // get index 0 from the unset
+        // do tile.AssingPattern() and assign a random tile pattern from its PossibleConnections
+        // OUTSIDE THIS METHOD: Reapeat until no more tiles are left unset
+
+
         List<Tile> newPossibleNeighbours = GetUnsetTiles();             //CHANGED 2 unsetTiles to newPossibleNeighbours
         //Check if there still are tiles to set
         if (newPossibleNeighbours.Count == 0)
@@ -237,7 +259,7 @@ public class ConstraintSolver : MonoBehaviour
         foreach (Vector3Int tileDirection in Util.Directions)                               //ADDED 2       //
         {
             //if (Util.CheckInBounds(_tileGrid._gridDimensions, tileDirectionsIndex))
-            if (Util.CheckInBounds(_gridDimensions, Index))                                 //ADDED 2
+            if (Util.CheckInBounds(GridDimensions, Index))                                 //ADDED 2
             {
                 tileDirections.Add((Vector3Int)tileDirection);
             }
@@ -328,13 +350,13 @@ public class ConstraintSolver : MonoBehaviour
     private List<Tile> GetTilesFlattened()   //IS THIS A METHOD OF TILE PLACEMENT WITHIN THE GRID?
     {
         List<Tile> tiles = new List<Tile>();
-        for (int x = 0; x < _gridDimensions.x; x++)
+        for (int x = 0; x < GridDimensions.x; x++)
         {
-            for (int y = 0; y < _gridDimensions.y; y++)
+            for (int y = 0; y < GridDimensions.y; y++)
             {
-                for (int z = 0; z < _gridDimensions.z; z++)
+                for (int z = 0; z < GridDimensions.z; z++)
                 {
-                    tiles.Add(_tileGrid[x, y, z]);
+                    tiles.Add(TileGrid[x, y, z]);
                 }
             }
         }

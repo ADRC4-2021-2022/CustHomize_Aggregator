@@ -7,7 +7,7 @@ public enum ConnectionType { conPink = 0 , conYellow = 1, conBlue = 2, conOrange
 public class Connection
 {
     #region public fields
-    ConnectionType Type;
+    public ConnectionType Type;
     public string Name;
     public List<TilePattern> ConnectingTiles;
 

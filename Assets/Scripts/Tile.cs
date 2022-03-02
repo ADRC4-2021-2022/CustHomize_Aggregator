@@ -10,9 +10,10 @@ public class Tile
     #region public fields
     public List<TilePattern> PossiblePatterns;
     public Vector3Int Index;
+    public TilePattern CurrentTile;
 
     private Dictionary<int, GameObject> _goTilePatternPrefabs;                 //ADDED
-
+    private GameObject _currentGo;
     
 
     //A tile is set if there is only one possible pattern
@@ -50,19 +51,47 @@ public class Tile
     {
         //Select a random pattern out of the list of possible patterns
 
-        AssignPattern();
+        //AssignPattern();
     }
 
-    public void AssignPattern()
+    public void AssignPattern(TilePattern pattern)
     {
+        if (_currentGo != null)
+        {
+            GameObject.Destroy(_currentGo);
+        }
+        _currentGo = GameObject.Instantiate(_solver.GOPatternPrefabs[pattern.Index]);
+        _currentGo.transform.position = Index;
+        CurrentTile = pattern;
+        // get neighbours
+        var neighbours = GetNeighbours();
+        // set neighbour.PossiblePatters to match what this tile defines
+        for (int i = 0; i < neighbours.Length; i++)
+        {
+            var neighbour = neighbours[i];
+            var connection = CurrentTile.Connections[i].Type;
+            if (neighbour != null)
+            {
+                int opposite;
+                if (i == 0) opposite = 1;
+                else if (i == 1) opposite = 0;
+                else if (i == 2) opposite = 3;
+                else if (i == 3) opposite = 2;
+                else if (i == 4) opposite = 5;
+                else opposite = 4;
+                neighbour.PossiblePatterns = neighbour.PossiblePatterns.Where(p => p.Connections[opposite].Type == connection).ToList();
+            }
+            //nPossible.Where()
+        }
+        
         //HOW?????
 
         //Create a prefab of the selected pattern using the index and the voxelsize as position
-                //creating a prefab of a SELECTED pattern. Where is this pattern being selected?
-            //in TilePattern
-            //using _goTilePrefab
-            //Index
-            //TileSize
+        //creating a prefab of a SELECTED pattern. Where is this pattern being selected?
+        //in TilePattern
+        //using _goTilePrefab
+        //Index
+        //TileSize
         //Remove all possible patterns out of the list
         //will be using List<TilePattern> PossiblePatterns
         //remove the possible patterns that have not been selected
@@ -71,24 +100,21 @@ public class Tile
         //You could add some weighted randomness in here - IGNORE THIS FOR NOW UNTIL WE FIGURE OUT REST OF PROJECT
 
         //propogate the grid
-        _solver.PropogateGrid(this);
+        //_solver.PropogateGrid(this);
     }
 
-    public Dictionary<int, GameObject> GOPatternPrefabs                                                 //ADDED
+    public Tile[] GetNeighbours()
     {
-        get                                                                                             //ADDED
+        Tile[] neighbours = new Tile[6];
+        for (int i = 0; i < Util.Directions.Count; i++)
         {
-            if (_goTilePatternPrefabs == null)                                                          //ADDED
-            {
-                _goTilePatternPrefabs = new Dictionary<int, GameObject>();                              //ADDED
-                _goTilePatternPrefabs.Add(0, Resources.Load("Prefabs/PrefabPatternB") as GameObject);   //ADDED
-                _goTilePatternPrefabs.Add(1, Resources.Load("Prefabs/PrefabPatternI") as GameObject);   //ADDED
-                _goTilePatternPrefabs.Add(2, Resources.Load("Prefabs/PrefabPatternK") as GameObject);   //ADDED
-                _goTilePatternPrefabs.Add(3, Resources.Load("Prefabs/PrefabPatternM") as GameObject);   //ADDED
-            }
-            return _goTilePatternPrefabs;                                                               //ADDED
+            Vector3Int nIndex = Index + Util.Directions[i];
+            if (nIndex.ValidateIndex(_solver.GridDimensions)) neighbours[i] = _solver.TileGrid[nIndex.x, nIndex.y, nIndex.z];
         }
+
+        return neighbours;
     }
+    
 
     public void CrossReferenceConnectionPatterns(List<TilePattern> patterns) //THIS IS REFERENCING THE TilePattern SCRIPT, WHICH CONTAINS ALL CONNECTIONS
     {

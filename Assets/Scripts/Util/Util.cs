@@ -26,6 +26,13 @@ public static class Util
             new Vector3Int(0,0,1)// plus z      5
     };
 
+    public static bool ValidateIndex(this Vector3Int index, Vector3Int gridSize)
+    {
+        return index.x >= 0 && index.x < gridSize.x &&
+               index.y >= 0 && index.y < gridSize.y &&
+               index.z >= 0 && index.z < gridSize.z;
+    }
+
     /// <summary>
     /// Generate a random color
     /// </summary>
