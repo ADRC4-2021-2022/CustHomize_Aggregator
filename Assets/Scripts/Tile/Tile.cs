@@ -7,12 +7,13 @@ using UnityEngine.UI;
 
 public class Tile
 {
+
     #region public fields
     public List<TilePattern> PossiblePatterns;
     public Vector3Int Index;
     public TilePattern CurrentTile;
 
-    private Dictionary<int, GameObject> _goTilePatternPrefabs;                 //ADDED
+    private Dictionary<int, GameObject> _goTilePatternPrefabs;                 
     private GameObject _currentGo;
     
 
@@ -37,6 +38,7 @@ public class Tile
     #region private fields
     private ConstraintSolver _solver;
     #endregion
+
     #region constructors
     public Tile(Vector3Int index, List<TilePattern> tileLibrary, ConstraintSolver solver)
     {
@@ -46,6 +48,7 @@ public class Tile
     }
 
     #endregion
+
     #region public functions
     public void AssignRandomPossiblePattern()
     {
@@ -60,11 +63,12 @@ public class Tile
         {
             GameObject.Destroy(_currentGo);
         }
+
         _currentGo = GameObject.Instantiate(_solver.GOPatternPrefabs[pattern.Index]);
         _currentGo.transform.position = Index;
         CurrentTile = pattern;
-        // get neighbours
         var neighbours = GetNeighbours();
+
         // set neighbour.PossiblePatters to match what this tile defines
         for (int i = 0; i < neighbours.Length; i++)
         {
@@ -80,11 +84,14 @@ public class Tile
                 else if (i == 4) opposite = 5;
                 else opposite = 4;
                 neighbour.PossiblePatterns = neighbour.PossiblePatterns.Where(p => p.Connections[opposite].Type == connection).ToList();
+
+                Debug.Log("Possible Neighbors: " + opposite);
+
             }
             //nPossible.Where()
         }
         
-        //HOW?????
+        
 
         //Create a prefab of the selected pattern using the index and the voxelsize as position
         //creating a prefab of a SELECTED pattern. Where is this pattern being selected?
@@ -114,9 +121,10 @@ public class Tile
 
         return neighbours;
     }
-    
 
-    public void CrossReferenceConnectionPatterns(List<TilePattern> patterns) //THIS IS REFERENCING THE TilePattern SCRIPT, WHICH CONTAINS ALL CONNECTIONS
+
+    //Contains all Connections
+    public void CrossReferenceConnectionPatterns(List<TilePattern> patterns) 
     {
         //Check if the patterns exist in both lists
         List<TilePattern> newPossiblePatterns = new List<TilePattern>();
@@ -132,7 +140,9 @@ public class Tile
     }
 
     #endregion
+
     #region private functions
 
     #endregion
+
 }

@@ -7,6 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class MeshFunctions : MonoBehaviour
 {
+
     #region Private fields
     private  Collider _collider;
     #endregion
@@ -68,6 +69,7 @@ public class MeshFunctions : MonoBehaviour
         return Util.PointInsideCollider(point, _collider);
     }*/
     #endregion
+
 }
 
 

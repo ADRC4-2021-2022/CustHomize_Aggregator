@@ -6,6 +6,7 @@ using UnityEngine;
 public enum ConnectionType { conPink = 0 , conYellow = 1, conBlue = 2, conOrange = 3, conCyan = 4, conGreen = 5}
 public class Connection
 {
+
     #region public fields
     public ConnectionType Type;
     public string Name;
@@ -16,15 +17,16 @@ public class Connection
     #region private fields
 
     #endregion
+
     #region constructors
     public Connection(ConnectionType type, string name)
     {
         Type = type;
         Name = name;
-
     }
 
     #endregion
+
     #region public functions
     public void AddTilePatternToConnection(TilePattern pattern)
     {
@@ -33,7 +35,9 @@ public class Connection
     }
 
     #endregion
+
     #region private functions
 
     #endregion
+
 }
