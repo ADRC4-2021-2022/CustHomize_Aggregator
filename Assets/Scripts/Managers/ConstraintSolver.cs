@@ -143,22 +143,8 @@ public class ConstraintSolver : MonoBehaviour
         List<Tile> lowestTiles = new List<Tile>();
         int lowestTile = int.MaxValue;
 
-
-        foreach (Tile tile in newPossibleNeighbours)                    
-        {
-            if (tile.NumberOfPossiblePatterns < lowestTile)
-            {
-                lowestTiles = new List<Tile>();
-
-                lowestTile = tile.NumberOfPossiblePatterns;
-            }
-            if (tile.NumberOfPossiblePatterns == lowestTile)
-            {
-                lowestTiles.Add(tile);
-            }
-        }
-
-
+        //Moved this section to under the propagate grid function                    
+      
         //Select a random tile out of the list
         int rndIndex = Random.Range(0, lowestTiles.Count);
         Tile tileToSet = lowestTiles[rndIndex];
@@ -168,8 +154,29 @@ public class ConstraintSolver : MonoBehaviour
         tileToSet.AssignRandomPossiblePattern();
 
 
-        //PropogateGrid on the set tile
+        //PropogateGrid on the set tile                        //this function is not doing anything at the current moment. It must not be the correct method in order to propagate the grid.
 
+        foreach (Tile tile in newPossibleNeighbours)                              
+        {
+            if (tile.NumberOfPossiblePatterns < lowestTile)
+            {
+                lowestTiles = new List<Tile>();
+
+                lowestTile = tile.NumberOfPossiblePatterns;
+
+            }
+            if (tile.NumberOfPossiblePatterns == lowestTile)
+            {
+                lowestTiles.Add(tile);
+            }
+            if (tile.NumberOfPossiblePatterns != lowestTile)
+            {
+                tileToSet.AssignRandomPossiblePattern();
+            }
+
+            Debug.Log("Propagating Grid");
+            return;
+        }
 
     }
 
@@ -232,28 +239,6 @@ public class ConstraintSolver : MonoBehaviour
         }
         return tiles;
     }
-
-
-    // this section is the attempt to get the script to pull from previous line to make a grid in an "itelligent" way. it is most probably incorrect hahaha
-
-    public void PropogateGrid(Tile setTile)
-    {
-
-        foreach (Tile tile in tiles);
-        {
-
-            if (Tile.dictionary.x ==  );
-            {
-                Tile.SetState()
-            }
-            else
-            {
-                tileToSet.AssignRandomPossiblePattern();
-            }
-        }
-    }
-
-    //propogate the grid for the new set tile
 
     #endregion
 
