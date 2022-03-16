@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using System.Linq;
+//using System.Linq;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 
@@ -149,14 +149,16 @@ public class ConstraintSolver : MonoBehaviour
         int rndIndex = Random.Range(0, lowestTiles.Count);
         Tile tileToSet = lowestTiles[rndIndex];
 
+        Debug.Log(" Random Index " + lowestTiles.Count);
+
 
         //Assign one of the possible patterns to the tile
         tileToSet.AssignRandomPossiblePattern();
 
 
-        //PropogateGrid on the set tile                        //this function is not doing anything at the current moment. It must not be the correct method in order to propagate the grid.
+        //PropogateGrid on the set tile                        //this function is not doing anything at the current moment. It must not be the correct method in order to propagate the grid. I still dont really know how to propagate the grid. Nothing seems to work
 
-        foreach (Tile tile in newPossibleNeighbours)                              
+        foreach (Tile tile in newPossibleNeighbours)           //Will Focus on Mesh Welding for now                       
         {
             if (tile.NumberOfPossiblePatterns < lowestTile)
             {
@@ -175,9 +177,12 @@ public class ConstraintSolver : MonoBehaviour
             }
 
             Debug.Log("Propagating Grid");
-            return;
         }
+        //Select a random tile out of the list
+         rndIndex = Random.Range(0, lowestTiles.Count);
+         tileToSet = lowestTiles[rndIndex];
 
+        Debug.Log(" Random Index " + lowestTiles.Count);
     }
 
     //Cardinal Directions Establishment 
@@ -219,8 +224,11 @@ public class ConstraintSolver : MonoBehaviour
         //Loop over all the tiles and check which ones are not set
         foreach (var tile in GetTilesFlattened())
         {
-            if (tile.Set) unsetTiles.Add(tile);     
+            //if (tile.Set) unsetTiles.Add(tile);
+            unsetTiles.Add(tile);
+            Debug.Log(tile.PossiblePatterns.Count);
         }
+        Debug.Log(unsetTiles.Count);
         return unsetTiles;
     }
 

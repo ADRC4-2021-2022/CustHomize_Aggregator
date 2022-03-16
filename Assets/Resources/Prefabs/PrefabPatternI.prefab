@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3752973219802781252}
+  - component: {fileID: -8687720075232610784}
   m_Layer: 0
   m_Name: PrefabPatternI
   m_TagString: Untagged
@@ -38,6 +39,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-8687720075232610784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4161974493862873601}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f7c2c0e45819a544b15e7e92848e156, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GridDimensions: {x: 0, y: 0, z: 0}
+  TileSize: 0
+  GOPatternPrefabs: []
 --- !u!1001 &233684603452191503
 PrefabInstance:
   m_ObjectHideFlags: 0
