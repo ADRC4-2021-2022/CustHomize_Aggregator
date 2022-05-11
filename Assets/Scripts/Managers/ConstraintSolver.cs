@@ -88,11 +88,20 @@ public class ConstraintSolver : MonoBehaviour
         //Set up the tile grid
         MakeTiles();
         // add a random tile to a random position
-        TileGrid[0, 0, 0].AssignPattern(_patternLibrary[0]);
+        TileGrid[5, 5, 5].AssignPattern(_patternLibrary[1]);
+        
         GetNextTile();
         
     }
 
+
+    private void OnGUI()
+    {
+        if(GUI.Button(new Rect(10, 10,200,50 ),"WFC step"))
+        {
+            GetNextTile();
+        }
+    }
     #endregion
 
     #region public functions
@@ -130,21 +139,47 @@ public class ConstraintSolver : MonoBehaviour
         // OUTSIDE THIS METHOD: Reapeat until no more tiles are left unset
         // <summary>
 
-        List<Tile> newPossibleNeighbours = GetUnsetTiles();     // unsetTiles to newPossibleNeighbours
+        List<Tile> UnsetTiles = GetUnsetTiles();     // unsetTiles to newPossibleNeighbours
       
         //Check if there still are tiles to set
 
-        if (newPossibleNeighbours.Count == 0)
+        if (UnsetTiles.Count == 0)
         {
             Debug.Log("all tiles are set");
             return;
         }                     
 
+        //this is currently not going to give you the lowest tile
         List<Tile> lowestTiles = new List<Tile>();
         int lowestTile = int.MaxValue;
 
         //Moved this section to under the propagate grid function                    
       
+        
+
+
+        //PropogateGrid on the set tile                        //this function is not doing anything at the current moment. It must not be the correct method in order to propagate the grid. I still dont really know how to propagate the grid. Nothing seems to work
+
+        foreach (Tile tile in UnsetTiles)                                 
+        {
+            if (tile.NumberOfPossiblePatterns < lowestTile)
+            {
+                lowestTiles = new List<Tile>() { tile };
+
+                lowestTile = tile.NumberOfPossiblePatterns;
+                
+                            }
+            else if (tile.NumberOfPossiblePatterns == lowestTile)
+            {
+                lowestTiles.Add(tile);
+            }
+            else if (tile.NumberOfPossiblePatterns != lowestTile)
+            {
+                tile.AssignRandomPossiblePattern();
+            }
+
+            Debug.Log("Propagating Grid");
+        }
         //Select a random tile out of the list
         int rndIndex = Random.Range(0, lowestTiles.Count);
         Tile tileToSet = lowestTiles[rndIndex];
@@ -154,35 +189,6 @@ public class ConstraintSolver : MonoBehaviour
 
         //Assign one of the possible patterns to the tile
         tileToSet.AssignRandomPossiblePattern();
-
-
-        //PropogateGrid on the set tile                        //this function is not doing anything at the current moment. It must not be the correct method in order to propagate the grid. I still dont really know how to propagate the grid. Nothing seems to work
-
-        foreach (Tile tile in newPossibleNeighbours)           //Will Focus on Mesh Welding for now                       
-        {
-            if (tile.NumberOfPossiblePatterns < lowestTile)
-            {
-                lowestTiles = new List<Tile>();
-
-                lowestTile = tile.NumberOfPossiblePatterns;
-
-            }
-            if (tile.NumberOfPossiblePatterns == lowestTile)
-            {
-                lowestTiles.Add(tile);
-            }
-            if (tile.NumberOfPossiblePatterns != lowestTile)
-            {
-                tileToSet.AssignRandomPossiblePattern();
-            }
-
-            Debug.Log("Propagating Grid");
-        }
-        //Select a random tile out of the list
-         rndIndex = Random.Range(0, lowestTiles.Count);
-         tileToSet = lowestTiles[rndIndex];
-
-        Debug.Log(" Random Index " + lowestTiles.Count);
     }
 
     //Cardinal Directions Establishment 
@@ -224,8 +230,8 @@ public class ConstraintSolver : MonoBehaviour
         //Loop over all the tiles and check which ones are not set
         foreach (var tile in GetTilesFlattened())
         {
-            //if (tile.Set) unsetTiles.Add(tile);
-            unsetTiles.Add(tile);
+            if (!tile.Set) unsetTiles.Add(tile);
+           
             Debug.Log(tile.PossiblePatterns.Count);
         }
         Debug.Log(unsetTiles.Count);

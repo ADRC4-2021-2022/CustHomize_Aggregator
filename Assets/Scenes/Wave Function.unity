@@ -330,7 +330,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f7c2c0e45819a544b15e7e92848e156, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GridDimensions: {x: 10, y: 5, z: 10}
+  GridDimensions: {x: 10, y: 10, z: 10}
   TileSize: 0
   GOPatternPrefabs: []
 --- !u!4 &1883964211

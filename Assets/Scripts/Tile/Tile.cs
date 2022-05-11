@@ -15,6 +15,7 @@ public class Tile
 
     private Dictionary<int, GameObject> _goTilePatternPrefabs;                 
     private GameObject _currentGo;
+    private bool _emptySet = false;
     
 
     //A tile is set if there is only one possible pattern
@@ -22,9 +23,11 @@ public class Tile
     {
         get
         {
-            return (PossiblePatterns.Count == 1);
+            return (PossiblePatterns.Count == 1)||_emptySet;
         }
     }
+
+    
 
     public int NumberOfPossiblePatterns
     {
@@ -52,9 +55,23 @@ public class Tile
     #region public functions
     public void AssignRandomPossiblePattern()
     {
-        //Select a random pattern out of the list of possible patterns
+        if (PossiblePatterns.Count == 0)
+        {
+            _emptySet = true;
+            Debug.Log($"No pattern available for til {Index} ");
+        }
+        //At the moment we will set the tile. This will allow for empty tiles. Better to create a generic tile and assign this one. Even better to keep track of the former option and select on of those
+        else
+        {
+            //Select a random pattern out of the list of possible patterns
+            int rndPatternIndex = Random.Range(0, PossiblePatterns.Count);
 
-        //AssignPattern();
+            AssignPattern(PossiblePatterns[rndPatternIndex]);
+
+            PossiblePatterns = new List<TilePattern>() { PossiblePatterns[rndPatternIndex] };
+        }
+
+       
     }
 
     public void AssignPattern(TilePattern pattern)
