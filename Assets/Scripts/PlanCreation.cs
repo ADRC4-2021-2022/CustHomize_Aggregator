@@ -4,74 +4,64 @@ using UnityEngine;
 
 public static class PlanCreation
 {
-    public static Texture2D CreatePlanImage(List<Tile> tiles, float level, Vector3 origin)
+    public static Texture2D CreatePlanFromTiles(List<Tile> tiles, float level, Vector3 origin)
+    {
+        List<Transform> transforms = new List<Transform>();
+        foreach (var tile in tiles)
+        {
+            var collider = tile.GetComponentCollider();
+            if (collider != null) transforms.Add(collider);
+        }
+
+        return CreatePlanFromTransforms(transforms, level, origin);
+    }
+
+    public static Texture2D CreatePlanFromTransforms(List<Transform> transforms, float level, Vector3 origin)
     {
         float dotSize = 0.1f;
         Vector2Int gridSize = new Vector2Int(64, 64);
         GameObject[,] dots = new GameObject[gridSize.x, gridSize.y];
-        for (int x = 0; x < gridSize.x; x++)
-        {
-            for (int z = 0; z < gridSize.y; z++)
-            {
-                //dots[x, z] = new Vector3(x * dotSize, level, z * dotSize) + origin;
-                var position = new Vector3(x * dotSize, level, z * dotSize) + origin;
-                var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                go.transform.position = position;
-                go.transform.localScale = Vector3.one * dotSize;
-                dots[x, z] = go;
-            }
-        }
 
         Texture2D texture = new Texture2D(gridSize.x, gridSize.y);
 
-        List<Transform> colliders = new List<Transform>();
-        foreach (var tile in tiles)
-        {
-            var collider = tile.GetComponentCollider();
-            if (collider != null) colliders.Add(collider);
-        }
-
         for (int x = 0; x < gridSize.x; x++)
         {
             for (int z = 0; z < gridSize.y; z++)
             {
-                var dot = dots[x, z];
-                bool isInside = false;
-                foreach (var transform in colliders)
+                var position = new Vector3(x * dotSize, level, z * dotSize) + origin;
+                var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                // remove the cube, use regular empty go
+                // add box collider component to the go
+                go.transform.position = position;
+                go.transform.localScale = Vector3.one * dotSize;
+                dots[x, z] = go;
+                texture.SetPixel(x,z, Color.white);
+            }
+        }
+
+        for (int x = 0; x < gridSize.x; x++)
+        {
+            for (int y = 0; y < gridSize.y; y++)
+            {
+                var dot = dots[x, y];
+                //var dotCollider = dot.GetComponent<BoxCollider>();
+                //dotCollider.size = Vector3.one * dotSize;
+                foreach (var transform in transforms)
                 {
-                    //isInside = Util.PointInsideCollider(dot, collider);
-                    var collider = transform.GetComponentInChildren<Collider>();
-                    if (collider == null) break;
-                    isInside = Physics.ComputePenetration(
-                        dot.GetComponent<Collider>(), 
-                        dot.transform.position, 
-                        Quaternion.identity, 
-                        collider, 
-                        transform.parent.position,
-                        Quaternion.identity,
-                        out Vector3 direction, 
-                        out float distance);
-                    if (isInside)
+                    var transformCollider = transform.GetComponent<Collider>();
+
+                    var vec = Physics.ClosestPoint(dot.transform.position, transformCollider, transform.position, transform.rotation);
+                    if (Vector3.Distance(vec, dot.transform.position) < dotSize * 1.5f)
                     {
-                        
+                        dot.GetComponent<MeshRenderer>().material.color = Color.black;
+                        texture.SetPixel(x, y, Color.black);
                         break;
                     }
                 }
-                if (!isInside)
-                {
-                    // add white pixel to image
-                    Debug.Log("white pixel");
-                    texture.SetPixel(x, z, Color.white);
-                }
-                else
-                {
-                    // add black pixel to image
-                    texture.SetPixel(x, z, Color.black);
-                    dot.GetComponent<MeshRenderer>().material.color = Color.black;
-                    Debug.Log("black pixel");
-                }
             }
+            
         }
+
         texture.Apply();
         return texture;
     }

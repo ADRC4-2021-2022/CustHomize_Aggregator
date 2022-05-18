@@ -113,7 +113,7 @@ public class ConstraintSolver : MonoBehaviour
         {
             if (tile.Index.y == 0 && tile.Set) tiles.Add(tile);
         }
-        PlanCreation.CreatePlanImage(tiles, 0f, Vector3.zero);
+        PlanCreation.CreatePlanFromTiles(tiles, 0f, Vector3.zero);
     }
 
     private void OnGUI()
