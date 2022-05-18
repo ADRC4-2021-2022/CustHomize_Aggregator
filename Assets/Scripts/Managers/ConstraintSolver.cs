@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-//using System.Linq;
+using System.Linq;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 
@@ -62,10 +62,17 @@ public class ConstraintSolver : MonoBehaviour
     {
         GOPatternPrefabs = new GameObject[]
         {
+            Resources.Load<GameObject>("Prefabs/PrefabPatternA"),
             Resources.Load<GameObject>("Prefabs/PrefabPatternB"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternC"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternD"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternE"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternF"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternG"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternH"),
             Resources.Load<GameObject>("Prefabs/PrefabPatternI"),
-            Resources.Load<GameObject>("Prefabs/PrefabPatternK"),
-            Resources.Load<GameObject>("Prefabs/PrefabPatternM")
+            Resources.Load<GameObject>("Prefabs/PrefabPatternJ"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternK")
         };
         //Add all connections
         _connections = new List<Connection>();
@@ -91,15 +98,33 @@ public class ConstraintSolver : MonoBehaviour
         TileGrid[5, 5, 5].AssignPattern(_patternLibrary[1]);
         
         GetNextTile();
+
+        //look into making this into a bounding box
         
     }
 
+    
+
+    public void GetPlan()
+    {
+        List<Tile> tiles = new List<Tile>();
+        foreach (var tile in TileGrid)
+        {
+            if (tile.Index.y == 0 && tile.Set) tiles.Add(tile);
+        }
+        PlanCreation.CreatePlanImage(tiles, 0f, Vector3.zero);
+    }
 
     private void OnGUI()
     {
         if(GUI.Button(new Rect(10, 10,200,50 ),"WFC step"))
         {
             GetNextTile();
+        }
+        if (GUI.Button(new Rect(10, 100, 200, 50), "Getplan"))
+        {
+            VoidVisability();
+            GetPlan();
         }
     }
     #endregion
@@ -158,7 +183,7 @@ public class ConstraintSolver : MonoBehaviour
         
 
 
-        //PropogateGrid on the set tile                        //this function is not doing anything at the current moment. It must not be the correct method in order to propagate the grid. I still dont really know how to propagate the grid. Nothing seems to work
+        //PropogateGrid on the set tile                     
 
         foreach (Tile tile in UnsetTiles)                                 
         {
@@ -254,7 +279,22 @@ public class ConstraintSolver : MonoBehaviour
         return tiles;
     }
 
-    #endregion
+    public void VoidVisability()
+    {
+        foreach (var tile in TileGrid)
+        {
+            if (tile.Set)
+            {
+                tile.VisibilitySwitch();
+            }
+        }
+    
+    }
+
 
 }
+    
+    #endregion
+
+
 

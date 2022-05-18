@@ -16,7 +16,7 @@ public class Tile
     private Dictionary<int, GameObject> _goTilePatternPrefabs;                 
     private GameObject _currentGo;
     private bool _emptySet = false;
-    
+    private bool _showconnections = true;    
 
     //A tile is set if there is only one possible pattern
     public bool Set
@@ -107,8 +107,9 @@ public class Tile
             }
             //nPossible.Where()
         }
-        
-        
+
+
+       
 
         //Create a prefab of the selected pattern using the index and the voxelsize as position
         //creating a prefab of a SELECTED pattern. Where is this pattern being selected?
@@ -154,6 +155,40 @@ public class Tile
         }
 
         PossiblePatterns = newPossiblePatterns;   
+    }
+
+    public void VisibilitySwitch()
+    {
+        _showconnections = !_showconnections;
+        if (_currentGo == null) return;
+        for (int i = 0; i < _currentGo.transform.childCount; i++)
+        {
+            var child = _currentGo.transform.GetChild(i);
+            if (child.gameObject.layer == 6)
+            {
+                child.GetComponentInChildren<MeshRenderer>().enabled = _showconnections;
+            }
+        }
+
+        
+    }
+
+    public Transform GetComponentCollider()
+    {
+        if (_currentGo != null)
+        {
+            for (int i = 0; i < _currentGo.transform.childCount; i++)
+            {
+                var child = _currentGo.transform.GetChild(i);
+                if (child.CompareTag("Component"))
+                {
+ 
+                    return child;
+                }
+            }
+        }
+       
+        return null;
     }
 
     #endregion
