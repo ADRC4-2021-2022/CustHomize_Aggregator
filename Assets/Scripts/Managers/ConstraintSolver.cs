@@ -64,15 +64,16 @@ public class ConstraintSolver : MonoBehaviour
         {
             Resources.Load<GameObject>("Prefabs/PrefabPatternA"),
             Resources.Load<GameObject>("Prefabs/PrefabPatternB"),
-            Resources.Load<GameObject>("Prefabs/PrefabPatternC"),
-            Resources.Load<GameObject>("Prefabs/PrefabPatternD"),
-            Resources.Load<GameObject>("Prefabs/PrefabPatternE"),
-            Resources.Load<GameObject>("Prefabs/PrefabPatternF"),
-            Resources.Load<GameObject>("Prefabs/PrefabPatternG"),
-            Resources.Load<GameObject>("Prefabs/PrefabPatternH"),
+           // Resources.Load<GameObject>("Prefabs/PrefabPatternC"),
+            //Resources.Load<GameObject>("Prefabs/PrefabPatternD"),
+           // Resources.Load<GameObject>("Prefabs/PrefabPatternE"),
+          //  Resources.Load<GameObject>("Prefabs/PrefabPatternF"),
+           // Resources.Load<GameObject>("Prefabs/PrefabPatternG"),
+           // Resources.Load<GameObject>("Prefabs/PrefabPatternH"),
             Resources.Load<GameObject>("Prefabs/PrefabPatternI"),
-            Resources.Load<GameObject>("Prefabs/PrefabPatternJ"),
-            Resources.Load<GameObject>("Prefabs/PrefabPatternK")
+           // Resources.Load<GameObject>("Prefabs/PrefabPatternJ"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternK"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternM")
         };
         //Add all connections
         _connections = new List<Connection>();
