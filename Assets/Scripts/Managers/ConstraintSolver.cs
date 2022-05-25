@@ -16,7 +16,7 @@ public class ConstraintSolver : MonoBehaviour
     [SerializeField]
     public Vector3Int GridDimensions;
     [SerializeField]
-    public float TileSize;         //CHANGED - FROM PRIVATE TO PUBLIC FOR USE IN TILE FILE, ASSIGN PATTERN
+    public Vector3 TileSize = new Vector3(40,12.5f,40);         //CHANGED - FROM PRIVATE TO PUBLIC FOR USE IN TILE FILE, ASSIGN PATTERN
 
 
     #endregion
@@ -62,18 +62,18 @@ public class ConstraintSolver : MonoBehaviour
     {
         GOPatternPrefabs = new GameObject[]
         {
-            Resources.Load<GameObject>("Prefabs/PrefabPatternA"),
-            Resources.Load<GameObject>("Prefabs/PrefabPatternB"),
-           // Resources.Load<GameObject>("Prefabs/PrefabPatternC"),
-            //Resources.Load<GameObject>("Prefabs/PrefabPatternD"),
-           // Resources.Load<GameObject>("Prefabs/PrefabPatternE"),
-          //  Resources.Load<GameObject>("Prefabs/PrefabPatternF"),
-           // Resources.Load<GameObject>("Prefabs/PrefabPatternG"),
-           // Resources.Load<GameObject>("Prefabs/PrefabPatternH"),
+            //Resources.Load<GameObject>("Prefabs/PrefabPatternA"),
+            //Resources.Load<GameObject>("Prefabs/PrefabPatternB"),
+            //Resources.Load<GameObject>("Prefabs/PrefabPatternC"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternD"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternE"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternF"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternG"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternH"),
             Resources.Load<GameObject>("Prefabs/PrefabPatternI"),
-           // Resources.Load<GameObject>("Prefabs/PrefabPatternJ"),
-            Resources.Load<GameObject>("Prefabs/PrefabPatternK"),
-            Resources.Load<GameObject>("Prefabs/PrefabPatternM")
+            //Resources.Load<GameObject>("Prefabs/PrefabPatternJ"),
+            //Resources.Load<GameObject>("Prefabs/PrefabPatternK"),
+            //Resources.Load<GameObject>("Prefabs/PrefabPatternL")
         };
         //Add all connections
         _connections = new List<Connection>();
@@ -148,7 +148,7 @@ public class ConstraintSolver : MonoBehaviour
             {
                 for (int z = 0; z < GridDimensions.z; z++)
                 {
-                    TileGrid[x, y, z] = new Tile(new Vector3Int(x, y, z), _patternLibrary, this);
+                    TileGrid[x, y, z] = new Tile(new Vector3Int(x, y, z), _patternLibrary, this,TileSize);
                 }
             }
         }

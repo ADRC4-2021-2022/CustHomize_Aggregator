@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1555164605760015327}
   - component: {fileID: 1353205466729527390}
   - component: {fileID: 7872456506172355583}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Up
   m_TagString: conCyan
   m_Icon: {fileID: 0}
@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 2855598592641453350}
   - component: {fileID: 2590417634767638194}
   - component: {fileID: 1426402689166893074}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Top
   m_TagString: conBlue
   m_Icon: {fileID: 0}
@@ -245,7 +245,7 @@ GameObject:
   - component: {fileID: 8597944568660993398}
   - component: {fileID: 1501675583410996983}
   - component: {fileID: 4785709110513430074}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left
   m_TagString: conYellow
   m_Icon: {fileID: 0}
@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 8736172200074927252}
   - component: {fileID: 381017411894680287}
   - component: {fileID: 5793567638788340470}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Down
   m_TagString: conCyan
   m_Icon: {fileID: 0}
@@ -441,7 +441,7 @@ GameObject:
   - component: {fileID: 3919027533115928571}
   - component: {fileID: 3180470811279762771}
   - component: {fileID: 3741969129528980201}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Right
   m_TagString: conYellow
   m_Icon: {fileID: 0}
@@ -532,6 +532,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 8102696768598221303}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 4b6ef962c81f9b84095ca1de41d4e56b, type: 3}
@@ -583,6 +584,7 @@ PrefabInstance:
       value: PatternJ
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b6ef962c81f9b84095ca1de41d4e56b, type: 3}
 --- !u!4 &8746298855762946560 stripped
 Transform:

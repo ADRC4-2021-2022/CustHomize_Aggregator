@@ -18,7 +18,7 @@ public static class PlanCreation
 
     public static Texture2D CreatePlanFromTransforms(List<Transform> transforms, float level, Vector3 origin)
     {
-        float dotSize = 0.2f;
+        float dotSize = 1f;
         Vector2Int gridSize = new Vector2Int(48, 48);
         GameObject[,] dots = new GameObject[gridSize.x, gridSize.y];
 
@@ -51,7 +51,8 @@ public static class PlanCreation
                     var transformCollider = transform.GetComponent<Collider>();
 
                     var vec = Physics.ClosestPoint(dot.transform.position, transformCollider, transform.position, transform.rotation);
-                    if (Vector3.Distance(vec, dot.transform.position) < dotSize * 1.5f)
+                    //if (Vector3.Distance(vec, dot.transform.position) < dotSize * 1.5f)
+                    if (Util.PointInsideCollider(dot.transform.position, transformCollider))
                     {
                         dot.GetComponent<MeshRenderer>().material.color = Color.black;
                         texture.SetPixel(x, y, Color.black);

@@ -32,47 +32,7 @@ public class TilePattern
     #endregion
 
     #region public functions
-    //Put this function into a UTIl class, you can use it in your entire project
-    public List<GameObject> GetChildObjectByTag(Transform parent, string tag) //?? WHERE DO WE DO THIS??
-    {
-        List<GameObject> taggedChildren = new List<GameObject>();
-
-        for (int i = 0; i < parent.childCount; i++)
-        {
-            Transform child = parent.GetChild(i);
-            if (child.tag == tag)
-            {
-                taggedChildren.Add(child.gameObject);
-            }
-            if (child.childCount > 0)
-            {
-                GetChildObjectByTag(child, tag);
-            }
-        }
-
-        return taggedChildren;
-    }
-
-    //Put this function into a UTIl class, you can use it in your entire project
-    public List<GameObject> GetChildObjectByLayer(Transform parent, int layer) 
-    {
-        List<GameObject> layerChildren = new List<GameObject>();
-
-        for (int i = 0; i < parent.childCount; i++)
-        {
-            Transform child = parent.GetChild(i);
-            if (child.gameObject.layer == layer)
-            {
-                layerChildren.Add(child.gameObject);
-            }
-            if (child.childCount > 0)
-            {
-                GetChildObjectByLayer(child, layer);
-            }
-        }
-
-        return layerChildren;
-    }
+    
     #endregion
 
     #region private functions
@@ -80,7 +40,7 @@ public class TilePattern
     {
         Connections = new Connection[6];
 
-        List<GameObject> goConnections = GetChildObjectByLayer(_goTilePrefab.transform, LayerMask.NameToLayer("Connections"));
+        List<GameObject> goConnections = Util.GetChildObjectByLayer(_goTilePrefab.transform, LayerMask.NameToLayer("Connections"));
 
         foreach (var goConnection in goConnections)
         {

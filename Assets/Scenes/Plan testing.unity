@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 1453241564}
   - component: {fileID: 1453241563}
   - component: {fileID: 1453241562}
+  - component: {fileID: 1453241565}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -212,6 +213,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1453241565
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1453241561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1a05f92fd62cfa4ab0342a34466ab25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {x: 0, y: 0, z: 0}
 --- !u!1 &1827122984
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,6 +370,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 1898573731}
     m_Modifications:
     - target: {fileID: 1168004645327556344, guid: 5b698bf1d7bbf894b826c8002c56a10b, type: 3}
@@ -366,9 +381,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: Collider
       objectReference: {fileID: 0}
+    - target: {fileID: 1434392097750648357, guid: 5b698bf1d7bbf894b826c8002c56a10b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2020273662324130255, guid: 5b698bf1d7bbf894b826c8002c56a10b, type: 3}
       propertyPath: m_Name
       value: Collider
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269717013090005723, guid: 5b698bf1d7bbf894b826c8002c56a10b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3785487658556690256, guid: 5b698bf1d7bbf894b826c8002c56a10b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3792000083366028350, guid: 5b698bf1d7bbf894b826c8002c56a10b, type: 3}
       propertyPath: m_Name
@@ -390,6 +417,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Collider
       objectReference: {fileID: 0}
+    - target: {fileID: 6530598416672483856, guid: 5b698bf1d7bbf894b826c8002c56a10b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7236430698222080549, guid: 5b698bf1d7bbf894b826c8002c56a10b, type: 3}
       propertyPath: m_Name
       value: Collider
@@ -404,15 +435,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7406507564400316139, guid: 5b698bf1d7bbf894b826c8002c56a10b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.125
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7406507564400316139, guid: 5b698bf1d7bbf894b826c8002c56a10b, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.125
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7406507564400316139, guid: 5b698bf1d7bbf894b826c8002c56a10b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.125
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7406507564400316139, guid: 5b698bf1d7bbf894b826c8002c56a10b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -462,6 +493,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Collider
       objectReference: {fileID: 0}
+    - target: {fileID: 8171956552754225899, guid: 5b698bf1d7bbf894b826c8002c56a10b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8299480784156637938, guid: 5b698bf1d7bbf894b826c8002c56a10b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8530036471131889407, guid: 5b698bf1d7bbf894b826c8002c56a10b, type: 3}
       propertyPath: m_Name
       value: Collider
@@ -471,4 +510,5 @@ PrefabInstance:
       value: Collider
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b698bf1d7bbf894b826c8002c56a10b, type: 3}

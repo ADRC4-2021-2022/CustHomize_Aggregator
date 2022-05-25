@@ -16,7 +16,8 @@ public class Tile
     private Dictionary<int, GameObject> _goTilePatternPrefabs;                 
     private GameObject _currentGo;
     private bool _emptySet = false;
-    private bool _showconnections = true;    
+    private bool _showconnections = true;
+    private Vector3 _tileSize;
 
     //A tile is set if there is only one possible pattern
     public bool Set
@@ -43,11 +44,12 @@ public class Tile
     #endregion
 
     #region constructors
-    public Tile(Vector3Int index, List<TilePattern> tileLibrary, ConstraintSolver solver)
+    public Tile(Vector3Int index, List<TilePattern> tileLibrary, ConstraintSolver solver, Vector3 tileSize )
     {
         PossiblePatterns = tileLibrary;
         Index = index;
         _solver = solver;
+        _tileSize = tileSize;
     }
 
     #endregion
@@ -82,7 +84,9 @@ public class Tile
         }
 
         _currentGo = GameObject.Instantiate(_solver.GOPatternPrefabs[pattern.Index]);
-        _currentGo.transform.position = Index;
+        Vector3 pos = _tileSize;
+        pos.Scale((Vector3)Index);
+        _currentGo.transform.position = pos;
         CurrentTile = pattern;
         var neighbours = GetNeighbours();
 

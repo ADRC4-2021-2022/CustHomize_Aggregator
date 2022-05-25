@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6800319552792777791}
   - component: {fileID: 6941670452372072603}
   - component: {fileID: 6322996603608668045}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Left
   m_TagString: conGreen
   m_Icon: {fileID: 0}
@@ -110,7 +110,7 @@ GameObject:
   - component: {fileID: 3097633389238007439}
   - component: {fileID: 4058101938872285634}
   - component: {fileID: 3636862057571888587}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Right
   m_TagString: conGreen
   m_Icon: {fileID: 0}
@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 2842078766538432542}
   - component: {fileID: 4990885997092992007}
   - component: {fileID: 3805697000050159382}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Top
   m_TagString: conPink
   m_Icon: {fileID: 0}
@@ -306,7 +306,7 @@ GameObject:
   - component: {fileID: 7733914743611819252}
   - component: {fileID: 7040104938924718419}
   - component: {fileID: 1881183927817432387}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Down
   m_TagString: conCyan
   m_Icon: {fileID: 0}
@@ -404,7 +404,7 @@ GameObject:
   - component: {fileID: 5061127635772932128}
   - component: {fileID: 2822583477530331531}
   - component: {fileID: 8425211501183035909}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Up
   m_TagString: conCyan
   m_Icon: {fileID: 0}
@@ -502,7 +502,7 @@ GameObject:
   - component: {fileID: 7344139994180408318}
   - component: {fileID: 1222929816220050317}
   - component: {fileID: 8743645411092190427}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bottom
   m_TagString: conBlue
   m_Icon: {fileID: 0}
@@ -631,6 +631,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 2
     m_TransformParent: {fileID: 1803251532977359612}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0ef7cebf6b1a60345b42a66954a05a16, type: 3}
@@ -682,6 +683,7 @@ PrefabInstance:
       value: PatternF
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ef7cebf6b1a60345b42a66954a05a16, type: 3}
 --- !u!4 &2731461001308467813 stripped
 Transform:

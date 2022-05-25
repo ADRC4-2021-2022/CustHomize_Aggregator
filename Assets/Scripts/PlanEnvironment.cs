@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class PlanEnvironment : MonoBehaviour
 {
@@ -10,11 +11,8 @@ public class PlanEnvironment : MonoBehaviour
     void Start()
     {
         _children = new List<Transform>();
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            var child = transform.GetChild(i);
-            _children.Add(child);
-        }
+        _children = Util.GetChildObjectByTag(transform,"Collider").Select(t=>t.transform).ToList();
+  
     }
 
 
@@ -23,7 +21,7 @@ public class PlanEnvironment : MonoBehaviour
     {
         if (GUI.Button(new Rect(10, 10, 200, 50), "PLAN!"))
         {
-            PlanCreation.CreatePlanFromTransforms(_children, 0, Vector3.zero);
+            PlanCreation.CreatePlanFromTransforms(_children, 5, Vector3.zero);
         }
 
     }
