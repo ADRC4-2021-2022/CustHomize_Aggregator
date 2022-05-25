@@ -18,8 +18,8 @@ public static class PlanCreation
 
     public static Texture2D CreatePlanFromTransforms(List<Transform> transforms, float level, Vector3 origin)
     {
-        float dotSize = 0.1f;
-        Vector2Int gridSize = new Vector2Int(64, 64);
+        float dotSize = 0.2f;
+        Vector2Int gridSize = new Vector2Int(48, 48);
         GameObject[,] dots = new GameObject[gridSize.x, gridSize.y];
 
         Texture2D texture = new Texture2D(gridSize.x, gridSize.y);

@@ -11,6 +11,7 @@ TagManager:
   - conCyan
   - conGreen
   - conOrange
+  - Collider
   layers:
   - Default
   - TransparentFX
