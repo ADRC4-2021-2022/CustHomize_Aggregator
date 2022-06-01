@@ -19,7 +19,7 @@ public class PlanEnvironment : MonoBehaviour
 
     private void OnGUI()
     {
-        if (GUI.Button(new Rect(10, 10, 200, 50), "PLAN!"))
+        if (GUI.Button(new Rect(10, 10, 200, 50), "Plan Creation"))
         {
             PlanCreation.CreatePlanFromTransforms(_children, 5, Vector3.zero);
         }
