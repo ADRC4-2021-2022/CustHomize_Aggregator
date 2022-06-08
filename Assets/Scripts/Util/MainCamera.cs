@@ -68,8 +68,7 @@ public class MainCamera : MonoBehaviour
     {
         Vector3 vector = transform.rotation * new Vector3(x, y, 0);
         transform.position += vector;
-        //if (transform.position.y < 0) transform.position = new Vector3(transform.position.x,0,transform.position.z);
-        //_target += vector;//Enable is you don't want a fixed target
+       
     }
 
     public void Rotate(Vector2 motion) => Rotate(motion.x, motion.y);
@@ -104,8 +103,6 @@ public class MainCamera : MonoBehaviour
 
     public void SetPositionTop()
     {
-        //VoxelGridManager gridManager = GameObject.FindObjectsOfType<VoxelGridManager>()[0];
-
-        //transform.SetPositionAndRotation(new Vector3(gridManager.GridCentre.x, gridManager.GridCentre.y + _height, gridManager.GridCentre.z), Quaternion.Euler(90, 0, 0));
+ 
     }
 }

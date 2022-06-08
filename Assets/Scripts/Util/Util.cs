@@ -77,6 +77,10 @@ public static class Util
     /// <returns>true if inside the collider</returns>
     public static bool PointInsideCollider(Vector3 point, Collider collider)
     {
+
+        if (collider == null) return false;
+        if (!collider.bounds.Contains(point)) return false;
+
         Physics.queriesHitBackfaces = true;
 
         int hitCounter = 0;
@@ -97,6 +101,8 @@ public static class Util
         bool isInside = hitCounter % 2 != 0;
         return isInside;
     }
+
+
 
     /// <summary>
     /// Generate a random index within voxelgrid dimensions

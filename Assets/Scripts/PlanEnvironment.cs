@@ -10,8 +10,7 @@ public class PlanEnvironment : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _children = new List<Transform>();
-        _children = Util.GetChildObjectByTag(transform,"Collider").Select(t=>t.transform).ToList();
+       
   
     }
 
@@ -19,10 +18,7 @@ public class PlanEnvironment : MonoBehaviour
 
     private void OnGUI()
     {
-        if (GUI.Button(new Rect(10, 10, 200, 50), "Plan Creation"))
-        {
-            PlanCreation.CreatePlanFromTransforms(_children, 5, Vector3.zero);
-        }
+      
 
     }
 }

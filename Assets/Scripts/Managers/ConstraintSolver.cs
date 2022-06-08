@@ -11,12 +11,10 @@ public class ConstraintSolver : MonoBehaviour
 {
 
     #region Serialized fields
-    //[SerializeField]
-    //private List<GameObject> _goPatterns;
     [SerializeField]
     public Vector3Int GridDimensions;
     [SerializeField]
-    public Vector3 TileSize = new Vector3(40,12.5f,40);         //CHANGED - FROM PRIVATE TO PUBLIC FOR USE IN TILE FILE, ASSIGN PATTERN
+    public Vector3 TileSize = new Vector3(40, 12.5f, 40);
 
 
     #endregion
@@ -29,29 +27,21 @@ public class ConstraintSolver : MonoBehaviour
 
     #region private fields
     public Tile[,,] TileGrid { private set; get; }
-    List<TilePattern> _patternLibrary; //?? WHERE DOES THIS GO??
+    List<TilePattern> _patternLibrary;
     List<Connection> _connections;
-    //List<Vector3Int> Connections;
-    //List<TilePattern> newPossiblePatterns;              //ADDED 2 - UNSURE IF THIS IS THE CORRECT WAY TO CALL IT
 
-    public Vector3Int Index { get; private set; }       //ADDED 2
-    //List<Vector3Int> Directions;
+    public Vector3Int Index { get; private set; }
 
 
-    private TilePattern _mat_ConPink;   //ADDED   00
-    private TilePattern _mat_ConYellow; //ADDED   01
-    private TilePattern _mat_ConBlue;   //ADDED   02
-    private TilePattern _mat_Orange;    //ADDED   03
-    private TilePattern _mat_Cyan;      //ADDED   04
-    private TilePattern _mat_Green;     //ADDED   05
+    private TilePattern _mat_ConPink;    //00
+    private TilePattern _mat_ConYellow;  //01
+    private TilePattern _mat_ConBlue;    //02
+    private TilePattern _mat_Orange;     //03
+    private TilePattern _mat_Cyan;       //04
+    private TilePattern _mat_Green;      //05
 
-    //Eppy.Tuple<int, int>[] stack;     //ADDED
-    //int stacksize;                      //ADDED
-
-    //private IEnumerable<object> enumerable;     //ADDED 2
-
-    /*public object GetTile { get; private set; }*/ //ADDED 2
-
+    private IEnumerator _propogateStep;
+    private bool _isCollapsing = false;
 
 
     #endregion
@@ -73,7 +63,8 @@ public class ConstraintSolver : MonoBehaviour
             Resources.Load<GameObject>("Prefabs/PrefabPatternI"),
             //Resources.Load<GameObject>("Prefabs/PrefabPatternJ"),
             //Resources.Load<GameObject>("Prefabs/PrefabPatternK"),
-            //Resources.Load<GameObject>("Prefabs/PrefabPatternL")
+            //Resources.Load<GameObject>("Prefabs/PrefabPatternL"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternM")
         };
         //Add all connections
         _connections = new List<Connection>();
@@ -92,40 +83,53 @@ public class ConstraintSolver : MonoBehaviour
             var goPattern = GOPatternPrefabs[i];
             _patternLibrary.Add(new TilePattern(i, goPattern, _connections));
         }
-       
+
         //Set up the tile grid
         MakeTiles();
         // add a random tile to a random position
-        TileGrid[5, 5, 5].AssignPattern(_patternLibrary[1]);
-        
+        TileGrid[2, 2, 2].AssignPattern(_patternLibrary[1]);
+
         GetNextTile();
 
         //look into making this into a bounding box
-        
+        _propogateStep = PropogateStep();
     }
 
-    
+
 
     public void GetPlan()
     {
-        List<Tile> tiles = new List<Tile>();
-        foreach (var tile in TileGrid)
-        {
-            if (tile.Index.y == 0 && tile.Set) tiles.Add(tile);
-        }
-        PlanCreation.CreatePlanFromTiles(tiles, 0f, Vector3.zero);
+
+        PlanCreation.CreatePlanFromTiles(GetTilesFlattened());
     }
 
+    //Buttons, Unity Buttons on Canvas are not compadible with script
     private void OnGUI()
     {
-        if(GUI.Button(new Rect(10, 10,200,50 ),"WFC step"))
+        if (GUI.Button(new Rect(10, 10, 200, 50), "Collapse Me")) // I would like to have this be a different font if possible
         {
-            GetNextTile();
+            if (!_isCollapsing)
+                StartCoroutine(_propogateStep);
+            else
+            {
+                StopCoroutine(_propogateStep);
+                _isCollapsing = false;
+            }
+
+
         }
-        if (GUI.Button(new Rect(10, 100, 200, 50), "Getplan"))
+        if (GUI.Button(new Rect(10, 100, 200, 50), "Hide Me"))
         {
             VoidVisability();
+        }
+        if (GUI.Button(new Rect(10, 190, 200, 50), "Plan Me"))
+        {
             GetPlan();
+
+        }
+        if (GUI.Button(new Rect(10, 280, 200, 50), "Cover Me"))
+        {
+            //BruteForceFiller(); will add this for facade detailing at a later time
         }
     }
     #endregion
@@ -136,9 +140,8 @@ public class ConstraintSolver : MonoBehaviour
     #endregion
 
     #region private functions
-    /// <summary>
-    /// Create the tile grid
-    /// </summary>
+
+    //Create the tile grid
     private void MakeTiles()
     {
         TileGrid = new Tile[GridDimensions.x, GridDimensions.y, GridDimensions.z];
@@ -148,9 +151,20 @@ public class ConstraintSolver : MonoBehaviour
             {
                 for (int z = 0; z < GridDimensions.z; z++)
                 {
-                    TileGrid[x, y, z] = new Tile(new Vector3Int(x, y, z), _patternLibrary, this,TileSize);
+                    TileGrid[x, y, z] = new Tile(new Vector3Int(x, y, z), _patternLibrary, this, TileSize);
                 }
             }
+        }
+    }
+
+
+    private IEnumerator PropogateStep()
+    {
+        while (true)
+        {
+            _isCollapsing = true;
+            GetNextTile();
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
@@ -165,36 +179,31 @@ public class ConstraintSolver : MonoBehaviour
         // OUTSIDE THIS METHOD: Reapeat until no more tiles are left unset
         // <summary>
 
-        List<Tile> UnsetTiles = GetUnsetTiles();     // unsetTiles to newPossibleNeighbours
-      
+        List<Tile> UnsetTiles = GetUnsetTiles();
+
         //Check if there still are tiles to set
 
         if (UnsetTiles.Count == 0)
         {
             Debug.Log("all tiles are set");
             return;
-        }                     
+        }
 
         //this is currently not going to give you the lowest tile
         List<Tile> lowestTiles = new List<Tile>();
         int lowestTile = int.MaxValue;
 
-        //Moved this section to under the propagate grid function                    
-      
-        
-
-
         //PropogateGrid on the set tile                     
 
-        foreach (Tile tile in UnsetTiles)                                 
+        foreach (Tile tile in UnsetTiles)
         {
             if (tile.NumberOfPossiblePatterns < lowestTile)
             {
                 lowestTiles = new List<Tile>() { tile };
 
                 lowestTile = tile.NumberOfPossiblePatterns;
-                
-                            }
+
+            }
             else if (tile.NumberOfPossiblePatterns == lowestTile)
             {
                 lowestTiles.Add(tile);
@@ -206,6 +215,7 @@ public class ConstraintSolver : MonoBehaviour
 
             Debug.Log("Propagating Grid");
         }
+
         //Select a random tile out of the list
         int rndIndex = Random.Range(0, lowestTiles.Count);
         Tile tileToSet = lowestTiles[rndIndex];
@@ -218,38 +228,37 @@ public class ConstraintSolver : MonoBehaviour
     }
 
     //Cardinal Directions Establishment 
-    public List<Vector3Int> GetTileDirectionList()                                                  
+    public List<Vector3Int> GetTileDirectionList()
     {
-        List<Vector3Int> tileDirections = new List<Vector3Int>();                                 
-        foreach (Vector3Int tileDirection in Util.Directions)                                      
+        List<Vector3Int> tileDirections = new List<Vector3Int>();
+        foreach (Vector3Int tileDirection in Util.Directions)
         {
-            //if (Util.CheckInBounds(_tileGrid._gridDimensions, tileDirectionsIndex))
-            if (Util.CheckInBounds(GridDimensions, Index))                                 
+            if (Util.CheckInBounds(GridDimensions, Index))
             {
                 tileDirections.Add((Vector3Int)tileDirection);
             }
         }
-        return tileDirections;                                                             
-                                                                                            
+        return tileDirections;
+
     }
 
     //tile to unsetTile, added possibleNeighbours, List<Tile> newPossiblePatterns
-    public List<Tile> GetNeighbour(List<TilePattern>newPossiblePatterns) 
-    {                                         
-        List<Tile> possibleNeighbours = new List<Tile>();                       
+    public List<Tile> GetNeighbour(List<TilePattern> newPossiblePatterns)
+    {
+        List<Tile> possibleNeighbours = new List<Tile>();
         IEnumerable<object> tileDirections = null;
-        foreach (var unsetTiles in tileDirections)                              
+        foreach (var unsetTiles in tileDirections)
         {
             if (unsetTiles == newPossiblePatterns)
             {
                 possibleNeighbours.Add((Tile)unsetTiles);
-            }                       
+            }
         }
 
         return possibleNeighbours;
     }
 
-    public List<Tile> GetUnsetTiles() 
+    public List<Tile> GetUnsetTiles()
     {
         List<Tile> unsetTiles = new List<Tile>();
 
@@ -257,14 +266,14 @@ public class ConstraintSolver : MonoBehaviour
         foreach (var tile in GetTilesFlattened())
         {
             if (!tile.Set) unsetTiles.Add(tile);
-           
+
             Debug.Log(tile.PossiblePatterns.Count);
         }
         Debug.Log(unsetTiles.Count);
         return unsetTiles;
     }
 
-    private List<Tile> GetTilesFlattened()  
+    private List<Tile> GetTilesFlattened()
     {
         List<Tile> tiles = new List<Tile>();
         for (int x = 0; x < GridDimensions.x; x++)
@@ -280,6 +289,7 @@ public class ConstraintSolver : MonoBehaviour
         return tiles;
     }
 
+    //this function removes the colored sides used for connections
     public void VoidVisability()
     {
         foreach (var tile in TileGrid)
@@ -289,13 +299,11 @@ public class ConstraintSolver : MonoBehaviour
                 tile.VisibilitySwitch();
             }
         }
-    
+
     }
 
-
-}
-    
     #endregion
+}
 
 
 

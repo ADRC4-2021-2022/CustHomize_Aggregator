@@ -1,152 +1,97 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public static class PlanCreation
 {
-    public static Texture2D CreatePlanFromTiles(List<Tile> tiles, float level, Vector3 origin)
+    private static float _voxelSize = 0.5f;
+    private static int _resolutionSide = 256;
+    private static int _floorHeight = 25; //floorheight in voxel units, not in meter
+    private static int _floorCutHeight = 12;
+
+
+    public static void CreatePlanFromTiles(List<Tile> tiles)
     {
-        List<Transform> transforms = new List<Transform>();
-        foreach (var tile in tiles)
+        // get the bounds of all the transforms
+        Bounds boundary = new Bounds();
+        foreach (Collider collider in tiles.Where(t=>t.Collider!= null).Select(t => t.Collider))
         {
-            var collider = tile.GetComponentCollider();
-            if (collider != null) transforms.Add(collider);
+            var tBounds = collider.bounds;
+            boundary.Encapsulate(tBounds);
         }
 
-        return CreatePlanFromTransforms(transforms, level, origin);
+        int gridXImages = Mathf.CeilToInt(boundary.size.x / (_voxelSize * _resolutionSide));
+        int gridX = gridXImages * _resolutionSide;
+
+        int gridZImages = Mathf.CeilToInt(boundary.size.z / (_voxelSize * _resolutionSide));
+        int gridZ = gridZImages * _resolutionSide;
+
+
+
+        int gridY = Mathf.CeilToInt(boundary.size.y / _voxelSize);
+        int floors = Mathf.CeilToInt((float)gridY / _floorHeight);
+
+        Vector3 origin = boundary.min;
+
+        Texture2D[,,] textures = new Texture2D[gridXImages, floors, gridZImages];
+
+        for (int y = 0; y < floors; y++)
+        {
+            for (int x = 0; x < gridXImages; x++)
+            {
+                for (int z = 0; z < gridZImages; z++)
+                {
+
+                    textures[x, y, z] = GenerateImage(origin, x, z, y, tiles);
+                }
+            }
+        }
     }
 
-    public static Texture2D CreatePlanFromTransforms(List<Transform> transforms, float level, Vector3 origin)
+    private static Texture2D GenerateImage(Vector3 origin, int gridImageX, int gridImageZ, int floor, List<Tile> tiles)
     {
-        float dotSize = 1f;
-        Vector2Int gridSize = new Vector2Int(48, 48);
-        Vector2Int grid2Size = new Vector2Int(48, 48);
-        GameObject[,] dots = new GameObject[gridSize.x, gridSize.y];
-
-        Texture2D textureA = new Texture2D(gridSize.x, gridSize.y);
-        Texture2D textureB = new Texture2D(grid2Size.x, grid2Size.y);
-
-        for (int x = 0; x < gridSize.x; x++)
+        GameObject goDaddy = new GameObject();
+        
+        Texture2D texture = new Texture2D(_resolutionSide, _resolutionSide);
+        for (int x = 0; x < _resolutionSide; x++)
         {
-            for (int z = 0; z < gridSize.y; z++)
+            for (int z = 0; z < _resolutionSide; z++)
             {
-                var position = new Vector3(x * dotSize, level, z * dotSize) + origin;
-                var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                // remove the cube, use regular empty go
-                // add box collider component to the go
+                Vector3 position = origin +
+                    (_voxelSize * _resolutionSide * new Vector3(gridImageX, 0, gridImageZ) //image origin
+                    + new Vector3(x * _voxelSize, ((floor-1) * _floorHeight + _floorCutHeight) * _voxelSize, z * _voxelSize)); //exact position and floor
+
+
+                //Check if the position is within the building
+                int counter = tiles.Count;
+                bool isInside = false;
+                while (!isInside && --counter >= 0)
+                {
+                    if (Util.PointInsideCollider(position, tiles[counter].Collider))
+                        isInside = true;
+
+
+                }
+                if (isInside)
+                {
+                    texture.SetPixel(x, z, Color.black);
+                   
+                }
+                else
+                    texture.SetPixel(x, z, Color.white);
+
+                GameObject go = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 go.transform.position = position;
-                go.transform.localScale = Vector3.one * dotSize;
-                dots[x, z] = go;
-                textureA.SetPixel(x,z, Color.white);
+                go.transform.localScale = Vector3.one * _voxelSize;
+                go.transform.parent = goDaddy.transform;
             }
         }
 
-        for (int x = 0; x < grid2Size.x; x++)
-        {
-            for (int z = 0; z < grid2Size.y; z++)
-            {
-                var position = new Vector3(x * dotSize, level, z * dotSize) + origin;
-                var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                // remove the cube, use regular empty go
-                // add box collider component to the go
-                go.transform.position = position;
-                go.transform.localScale = Vector3.one * dotSize;
-                dots[x, z] = go;
-                textureB.SetPixel(x, z, Color.white);
-            }
-        }
+        texture.Apply();
 
-        for (int x = 0; x < gridSize.x; x++)
-        {
-            for (int y = 0; y < gridSize.y; y++)
-            {
-                var dot = dots[x, y];
-
-                foreach (var transform in transforms)
-                {
-                    var transformCollider = transform.GetComponent<Collider>();
-
-                    var vec = Physics.ClosestPoint(dot.transform.position, transformCollider, transform.position, transform.rotation);
-                    //if (Vector3.Distance(vec, dot.transform.position) < dotSize * 1.5f)
-                    if (Util.PointInsideCollider(dot.transform.position, transformCollider))
-                    {
-                        dot.GetComponent<MeshRenderer>().material.color = Color.black;
-                        textureA.SetPixel(x, y, Color.black);
-                        break;
-                    }
-                }
-            }
-            
-        }
-
-        for (int x = 0; x < grid2Size.x; x++)
-        {
-            for (int y = 0; y < grid2Size.y; y++)
-            {
-                var dot = dots[x, y];
-
-                foreach (var transform in transforms)
-                {
-                    var transformCollider = transform.GetComponent<Collider>();
-
-                    var vec = Physics.ClosestPoint(dot.transform.position, transformCollider, transform.position, transform.rotation);
-                    //if (Vector3.Distance(vec, dot.transform.position) < dotSize * 1.5f)
-                    if (Util.PointInsideCollider(dot.transform.position, transformCollider))
-                    {
-                        dot.GetComponent<MeshRenderer>().material.color = Color.black;
-                        textureB.SetPixel(x, y, Color.black);
-                        break;
-                    }
-                }
-            }
-
-        }
-
-        textureA.Apply();
-        return textureA;
-
-
-        textureB.Apply();
-        return textureB;
-
-       //these are for later
-
-       // textureb.Apply();
-       // return textureC;
-
-       // textureb.Apply();
-       // return textureD;
-
-        //Attempt at texture merging script
-        //Create an array with the picture needed to be merged
-        Texture2D[] toMerge = { texture, textureB };
-
-        //Create the finale picture
-        Texture2D finaltexture = new Texture2D(256, 256);
-
-        //Merge the mockup and screen into the finale picture
-        for (int i = 0; i < toMerge.Length; i++)
-        {
-            for (int x = 0; x < toMerge[i].width; x++)
-            {
-                for (int y = 0; y < toMerge[i].height; y++)
-                {
-                    var color = toMerge[i].GetPixel(x, y).a == 0 ?
-                        finaltexture.GetPixel(x, y) :
-                        toMerge[i].GetPixel(x, y);
-
-                    finaltexture.SetPixel(x, y, color);
-                }
-            }
-        }
-        finaltexture.Apply();
-
-        //Create the save file of the final picture
-        byte[] floorPlan = finaltexture.EncodeToPNG();
-
-        //This is not correct obviously, but I forgot why this file path is not working 
-        filePath.WriteAllBytes(floorPlan);
-
+        ImageReadWrite.SaveImage(texture, $"p2pOutput/{gridImageX},{floor},{gridImageZ}");
+        return texture;
     }
 
 }

@@ -13,7 +13,7 @@ public class Tile
     public Vector3Int Index;
     public TilePattern CurrentTile;
 
-    private Dictionary<int, GameObject> _goTilePatternPrefabs;                 
+    private Dictionary<int, GameObject> _goTilePatternPrefabs;
     private GameObject _currentGo;
     private bool _emptySet = false;
     private bool _showconnections = true;
@@ -24,11 +24,11 @@ public class Tile
     {
         get
         {
-            return (PossiblePatterns.Count == 1)||_emptySet;
+            return (PossiblePatterns.Count == 1) || _emptySet;
         }
     }
 
-    
+
 
     public int NumberOfPossiblePatterns
     {
@@ -37,14 +37,25 @@ public class Tile
             return PossiblePatterns.Count;
         }
     }
+
+    public MeshCollider Collider
+    {
+        get
+        {
+            if (_currentGo == null)
+                return null;
+            else
+                return _currentGo.GetComponentInChildren<MeshCollider>();
+        }
+    }
     #endregion
 
-    #region private fields
+        #region private fields
     private ConstraintSolver _solver;
     #endregion
 
     #region constructors
-    public Tile(Vector3Int index, List<TilePattern> tileLibrary, ConstraintSolver solver, Vector3 tileSize )
+    public Tile(Vector3Int index, List<TilePattern> tileLibrary, ConstraintSolver solver, Vector3 tileSize)
     {
         PossiblePatterns = tileLibrary;
         Index = index;
@@ -73,7 +84,7 @@ public class Tile
             PossiblePatterns = new List<TilePattern>() { PossiblePatterns[rndPatternIndex] };
         }
 
-       
+
     }
 
     public void AssignPattern(TilePattern pattern)
@@ -113,7 +124,7 @@ public class Tile
         }
 
 
-       
+
 
         //Create a prefab of the selected pattern using the index and the voxelsize as position
         //creating a prefab of a SELECTED pattern. Where is this pattern being selected?
@@ -146,19 +157,19 @@ public class Tile
 
 
     //Contains all Connections
-    public void CrossReferenceConnectionPatterns(List<TilePattern> patterns) 
+    public void CrossReferenceConnectionPatterns(List<TilePattern> patterns)
     {
         //Check if the patterns exist in both lists
         List<TilePattern> newPossiblePatterns = new List<TilePattern>();
         foreach (var pattern in patterns)
         {
-            if(PossiblePatterns.Contains(pattern))  //if the pattern is contained in both lists...
+            if (PossiblePatterns.Contains(pattern))  //if the pattern is contained in both lists...
             {
                 newPossiblePatterns.Add(pattern);   //add the pattern
             }
         }
 
-        PossiblePatterns = newPossiblePatterns;   
+        PossiblePatterns = newPossiblePatterns;
     }
 
     public void VisibilitySwitch()
@@ -174,7 +185,7 @@ public class Tile
             }
         }
 
-        
+
     }
 
     public Transform GetComponentCollider()
@@ -186,12 +197,12 @@ public class Tile
                 var child = _currentGo.transform.GetChild(i);
                 if (child.CompareTag("Component"))
                 {
- 
+
                     return child;
                 }
             }
         }
-       
+
         return null;
     }
 
