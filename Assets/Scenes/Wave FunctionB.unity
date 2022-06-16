@@ -726,8 +726,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f7c2c0e45819a544b15e7e92848e156, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GridDimensions: {x: 10, y: 10, z: 10}
-  TileSize: {x: 40, y: 12.5, z: 40}
+  GridDimensions: {x: 4, y: 7, z: 4}
+  TileSize: {x: 12, y: 4, z: 12}
   GOPatternPrefabs: []
 --- !u!4 &1883964211
 Transform:

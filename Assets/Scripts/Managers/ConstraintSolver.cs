@@ -14,7 +14,7 @@ public class ConstraintSolver : MonoBehaviour
     [SerializeField]
     public Vector3Int GridDimensions;
     [SerializeField]
-    public Vector3 TileSize = new Vector3(40, 12.5f, 40);
+    public Vector3 TileSize = new Vector3(12, 4, 12);
 
 
     #endregion
@@ -52,19 +52,39 @@ public class ConstraintSolver : MonoBehaviour
     {
         GOPatternPrefabs = new GameObject[]
         {
-            //Resources.Load<GameObject>("Prefabs/PrefabPatternA"),
-            //Resources.Load<GameObject>("Prefabs/PrefabPatternB"),
-            //Resources.Load<GameObject>("Prefabs/PrefabPatternC"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternA"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternB"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternC"),
             Resources.Load<GameObject>("Prefabs/PrefabPatternD"),
             Resources.Load<GameObject>("Prefabs/PrefabPatternE"),
             Resources.Load<GameObject>("Prefabs/PrefabPatternF"),
             Resources.Load<GameObject>("Prefabs/PrefabPatternG"),
             Resources.Load<GameObject>("Prefabs/PrefabPatternH"),
             Resources.Load<GameObject>("Prefabs/PrefabPatternI"),
-            //Resources.Load<GameObject>("Prefabs/PrefabPatternJ"),
-            //Resources.Load<GameObject>("Prefabs/PrefabPatternK"),
-            //Resources.Load<GameObject>("Prefabs/PrefabPatternL"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternJ"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternK"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternL"),
             Resources.Load<GameObject>("Prefabs/PrefabPatternM")
+            //Resources.Load<GameObject>("Prefabs/PrefabPatternN"),
+            //Resources.Load<GameObject>("Prefabs/PrefabPatternO"),
+            //Resources.Load<GameObject>("Prefabs/PrefabPatternP"),
+            //Resources.Load<GameObject>("Prefabs/PrefabPatternQ")
+
+
+            //Resources.Load<GameObject>("Prefabs/PrefabPatternZ") is meant to be used for the facade
+
+            //* summary of facade creation
+            //[06/06/2022 14:14] Doria, David
+            //components/stones voxelised, so that you can identify internal and façade
+            //sections of your structure based on neighbouring status of the voxels.From there,
+            //you can use another WFC or even a brute force strategy
+            //That would require you to voxelise the structure, which wouldn't be a big problem,
+            //but there's another way.For each chunk that you aggregate via the WFC, you have an option of façade and glazing solution
+            //that you only activate if the component does not have a neighbour in that direction.
+            //E.g.each connection also have a layer of façade pre-modelled and after you aggregate everything,
+            //you which chunks are on the periphery of the aggregation and 'activate' their façade
+            //notes from David
+
         };
         //Add all connections
         _connections = new List<Connection>();
@@ -87,7 +107,7 @@ public class ConstraintSolver : MonoBehaviour
         //Set up the tile grid
         MakeTiles();
         // add a random tile to a random position
-        TileGrid[2, 2, 2].AssignPattern(_patternLibrary[1]);
+        TileGrid[0, 0, 0].AssignPattern(_patternLibrary[1]);
 
         GetNextTile();
 
