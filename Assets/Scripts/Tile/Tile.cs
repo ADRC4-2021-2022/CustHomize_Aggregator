@@ -117,7 +117,7 @@ public class Tile
                 else opposite = 4;
                 neighbour.PossiblePatterns = neighbour.PossiblePatterns.Where(p => p.Connections[opposite].Type == connection).ToList();
 
-                Debug.Log("Possible Neighbors: " + opposite);
+                Debug.Log($"Possible Neighbors in direction {i}: {opposite}");
 
             }
             //nPossible.Where()

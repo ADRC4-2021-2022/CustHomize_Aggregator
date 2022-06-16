@@ -39,6 +39,7 @@ public class ConstraintSolver : MonoBehaviour
     private TilePattern _mat_Orange;     //03
     private TilePattern _mat_Cyan;       //04
     private TilePattern _mat_Green;      //05
+    private TilePattern _mat_Stair;      //05
 
     private IEnumerator _propogateStep;
     private bool _isCollapsing = false;
@@ -57,6 +58,7 @@ public class ConstraintSolver : MonoBehaviour
             Resources.Load<GameObject>("Prefabs/PrefabPatternC"),
             Resources.Load<GameObject>("Prefabs/PrefabPatternD"),
             Resources.Load<GameObject>("Prefabs/PrefabPatternE"),
+            Resources.Load<GameObject>("Prefabs/PrefabPatternETop"),
             Resources.Load<GameObject>("Prefabs/PrefabPatternF"),
             Resources.Load<GameObject>("Prefabs/PrefabPatternG"),
             Resources.Load<GameObject>("Prefabs/PrefabPatternH"),
@@ -95,6 +97,7 @@ public class ConstraintSolver : MonoBehaviour
         _connections.Add(new Connection(ConnectionType.conOrange, "conOrange"));      //03
         _connections.Add(new Connection(ConnectionType.conCyan, "conCyan"));          //04
         _connections.Add(new Connection(ConnectionType.conGreen, "conGreen"));        //05
+        _connections.Add(new Connection(ConnectionType.conStair, "conStair"));        //06
 
         //Add all patterns
         _patternLibrary = new List<TilePattern>();
@@ -107,15 +110,22 @@ public class ConstraintSolver : MonoBehaviour
         //Set up the tile grid
         MakeTiles();
         // add a random tile to a random position
-        TileGrid[0, 0, 0].AssignPattern(_patternLibrary[1]);
+        SetStairTile();
 
         GetNextTile();
 
         //look into making this into a bounding box
-        _propogateStep = PropogateStep();
+       _propogateStep = PropogateStep();
     }
 
 
+    public void SetStairTile()
+    {
+        int rndX = Random.Range(0, GridDimensions.x);
+        int rndZ = Random.Range(0, GridDimensions.z);
+
+        TileGrid[rndX, 0, rndZ].AssignPattern(_patternLibrary[4]);
+    }
 
     public void GetPlan()
     {
@@ -228,10 +238,6 @@ public class ConstraintSolver : MonoBehaviour
             {
                 lowestTiles.Add(tile);
             }
-            else if (tile.NumberOfPossiblePatterns != lowestTile)
-            {
-                tile.AssignRandomPossiblePattern();
-            }
 
             Debug.Log("Propagating Grid");
         }
@@ -240,7 +246,7 @@ public class ConstraintSolver : MonoBehaviour
         int rndIndex = Random.Range(0, lowestTiles.Count);
         Tile tileToSet = lowestTiles[rndIndex];
 
-        Debug.Log(" Random Index " + lowestTiles.Count);
+        Debug.Log($" Random Index { rndIndex }: {tileToSet.PossiblePatterns.Count}");
 
 
         //Assign one of the possible patterns to the tile

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public enum PatternType { mat_ConPink, mat_ConYellow, mat_ConBlue, mat_ConOrange, mat_ConCyan, mat_ConGreen }   
+public enum PatternType { Stair, Elevator, Landing}   
 public class TilePattern
 {
 
@@ -41,12 +41,24 @@ public class TilePattern
         Connections = new Connection[6];
 
         List<GameObject> goConnections = Util.GetChildObjectByLayer(_goTilePrefab.transform, LayerMask.NameToLayer("Connections"));
+        if(goConnections.Count != 6)
+        {
+            Debug.Log($"no 6 connections found for prefab {_goTilePrefab.name} ");
+        }
 
         foreach (var goConnection in goConnections)
         {
             var connection = ConnectionTypes.First(c => c.Name == goConnection.tag);
             connection.AddTilePatternToConnection(this);
             Vector3 rotation = goConnection.transform.rotation.eulerAngles;
+
+            //Connection[0]: -x
+            //Connection[1]: x
+            //Connection[2]: -y
+            //Connection[3]: y
+            //Connection[4]: -z
+            //Connection[5]: z
+
             if (rotation.x != 0)
             {
                 //we know it is a vertical connection

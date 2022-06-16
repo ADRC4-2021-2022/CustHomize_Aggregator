@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 //Add all connection types here
-public enum ConnectionType { conPink = 0 , conYellow = 1, conBlue = 2, conOrange = 3, conCyan = 4, conGreen = 5}
+public enum ConnectionType { conPink = 0 , conYellow = 1, conBlue = 2, conOrange = 3, conCyan = 4, conGreen = 5, conStair = 6}
 public class Connection
 {
 
